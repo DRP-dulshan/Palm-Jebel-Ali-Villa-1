@@ -1,0 +1,120 @@
+{
+  "hero-beachfront": {
+    "width": 1920,
+    "height": 1078,
+    "widths": [
+      480,
+      768,
+      1200,
+      1920
+    ],
+    "blur": "data:image/webp;base64,UklGRloAAABXRUJQVlA4IE4AAACwAwCdASoUAAsAPxF4tFGsJyUisAgBgCIJZQC7ACHnLMZYDNAj4AD9/OBNgCyLVGlKFWQqXS9hFmULQgYHC3lkGLaBcZcvRnDooRMTAAA="
+  },
+  "exterior-arrival": {
+    "width": 1920,
+    "height": 1078,
+    "widths": [
+      480,
+      768,
+      1200,
+      1920
+    ],
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAwCdASoUAAsAPxF0tFEsJqUisAgBgCIJYwC06CEB0g7t1nzEcAAA/c6yWGFxAHB35ntriETmHD9VxnaihKjbNFHYAA=="
+  },
+  "living-room": {
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      480,
+      768,
+      1200,
+      1920
+    ],
+    "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAABwAwCdASoUAAsAPxF0slCsJqSisAgBgCIJZQC7AAyeMCQepgAA9wjyZot1PP3mmsS2So3P0j5xgbG2IGeoi4sAAAA="
+  },
+  "dining-kitchen": {
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      480,
+      768,
+      1200,
+      1920
+    ],
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAADQAwCdASoUAAsAPxF0sFCsJqSisAgBgCIJZQCdMoACQuOpBcV9HQAAzPXXZV5uoSWvqy8YTfu1z7rUx4cDroR9wZwAAA=="
+  },
+  "master-bedroom": {
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      480,
+      768,
+      1200,
+      1920
+    ],
+    "blur": "data:image/webp;base64,UklGRkwAAABXRUJQVlA4IEAAAACQAwCdASoUAAsAPxF0sVAsJySisAgBgCIJZQC06Ap+CSb3ujuAAIYkhNaZPKnK5AEUATDOs6ObhXAjJuDiAAAA"
+  },
+  "master-bathroom": {
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      480,
+      768,
+      1200,
+      1920
+    ],
+    "blur": "data:image/webp;base64,UklGRkgAAABXRUJQVlA4IDwAAACQAwCdASoUAAsAPxF0sFCsJqSisAgBgCIJZQCdAB2g3q4zhNGAAP5jvnpJwZlVUwEmpvm8XEvwQyTAAAA="
+  },
+  "family-room": {
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      480,
+      768,
+      1200,
+      1920
+    ],
+    "blur": "data:image/webp;base64,UklGRlAAAABXRUJQVlA4IEQAAAAwAwCdASoUAAsAPxF4slEsJ6SisAgBgCIJQBOgAVUkiwgAAPyB6Yx4KJxLe/Z1SNY9uYGViFYZEIFGDrsck0Bq5eAAAA=="
+  },
+  "guest-bathroom": {
+    "width": 1920,
+    "height": 1080,
+    "widths": [
+      480,
+      768,
+      1200,
+      1920
+    ],
+    "blur": "data:image/webp;base64,UklGRk4AAABXRUJQVlA4IEIAAACwAwCdASoUAAsAPxFwsFAsJiSisAgBgCIJYwCdABS8z6H4woGigAD8fhTxsQelUMxqUQVqu8fEmy37Jja7+XqAAAA="
+  },
+  "floor-plans/ground-floor": {
+    "width": 323,
+    "height": 502,
+    "blur": "data:image/webp;base64,UklGRlIAAABXRUJQVlA4IEYAAADwAwCdASoUAB8APxFqs1AsJaUisBgMAYAiCWlg6wAUo+QEc4mgKdEAAP7tPMQWYlqmTw5YGaOgpHp8Pwi0RJ3giCJdQgAA",
+    "format": "png"
+  },
+  "floor-plans/first-floor": {
+    "width": 323,
+    "height": 502,
+    "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAAAQBACdASoUAB8APwVwrFArpqQit/VYAXAgiWkAAClP3pbbbVAckVedgAD+79eM2QXOjte33tF1UN28MurEV1rdQpgNKsaAAAA=",
+    "format": "png"
+  },
+  "floor-plans/second-floor": {
+    "width": 323,
+    "height": 502,
+    "blur": "data:image/webp;base64,UklGRlQAAABXRUJQVlA4IEgAAABQBACdASoUAB8APwFssFArJiUisAwBYCAJaQAAW+veagMqHnvrKvJS2ecAAP7vxA18SxoRaGnNOWucTMMpu1AacZYC1J6X4AA=",
+    "format": "png"
+  },
+  "logo-white": {
+    "width": 540,
+    "height": 288
+  },
+  "logo-nakheel-white": {
+    "width": 760,
+    "height": 134
+  },
+  "dld-permit-qr": {
+    "width": 462,
+    "height": 460
+  }
+}

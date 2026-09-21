@@ -1,0 +1,293 @@
+/* ------------------------------------------------------------------
+ * ALL PAGE COPY — every word on the page lives here.
+ * Edit text in this file; the components read from it.
+ * ------------------------------------------------------------------ */
+
+export const listing = {
+  meta: {
+    title: "Wave Crest · 5 Bedroom Beach Villa — Palm Jebel Ali, Frond A",
+    description:
+      "A signature beachfront residence on Frond A of Palm Jebel Ali. 5 bedrooms, 8,368 sq.ft. across a 7,640 sq.ft. plot, direct beachfront. AED 24,500,000.",
+    ogImage: "/images/og-wave-crest.jpg",
+  },
+
+  hero: {
+    eyebrow: "Palm Jebel Ali · Frond A",
+    headline: "Own the Waterfront.",
+    sub: "Wave Crest · 5 Bedroom Beach Villa",
+    line: "A rare opportunity to own a signature beachfront residence on one of Palm Jebel Ali's most prestigious residential fronds.",
+    price: "AED 24,500,000",
+    stats: [
+      { value: "8,368", unit: "sq.ft.", label: "Property Area" },
+      { value: "7,640", unit: "sq.ft.", label: "Plot" },
+      { value: "5", unit: "", label: "Bedrooms" },
+      { value: "Direct", unit: "", label: "Beachfront" },
+    ],
+    cta: "Request Private Details",
+  },
+
+  intro: {
+    eyebrow: "The Opportunity",
+    heading: "A New Generation of Beachfront Living",
+    body: [
+      "Set directly on Frond A of Palm Jebel Ali, this Wave Crest villa forms part of Nakheel's exclusive Beach Collection, a limited collection of architecturally distinctive residences created for private waterfront living.",
+      "Designed by LW Design Group, Wave Crest combines contemporary architecture, expansive glazing, natural materials and generous indoor-outdoor spaces, with the sea forming the backdrop to the residence.",
+    ],
+    quote:
+      "This is not simply a villa near the water. The beach is an extension of the home.",
+  },
+
+  residence: {
+    eyebrow: "The Residence",
+    heading: "Designed Around the Horizon.",
+    body: [
+      "With approximately 8,368 sq.ft. of property area across a 7,640 sq.ft. plot, the residence delivers exceptional scale while maintaining the privacy and openness expected from a true beachfront home.",
+      "Floor-to-ceiling glazing brings natural light deep into the interiors and creates a continuous visual connection between the living spaces, landscaped exterior and Arabian Gulf.",
+    ],
+    features: [
+      { icon: "bed", label: "5 Bedrooms" },
+      { icon: "sofa", label: "Family Room" },
+      { icon: "living", label: "Formal & Family Living Areas" },
+      { icon: "terrace", label: "Expansive Sea-Facing Terraces" },
+      { icon: "roof", label: "Roof Lounge & Terrace" },
+      { icon: "garden", label: "Landscaped Outdoor Areas" },
+      { icon: "wave", label: "Direct Beach Access" },
+    ],
+  },
+
+  floorPlans: {
+    eyebrow: "Floor Plans",
+    heading: "Every Level, Considered.",
+    note: "Tap a plan to open it full screen and zoom.",
+    /** Areas are taken from the schedule printed on each drawing */
+    levels: [
+      {
+        id: "ground",
+        slug: "floor-plans/ground-floor",
+        tab: "Ground",
+        title: "Ground Floor",
+        area: "2,774.94 sq.ft.",
+        outdoor: "Balcony / Terrace / Porch — 24.11 sq.ft.",
+        alt: "Ground floor plan of the Wave Crest villa, showing the pool and beach terrace, living and dining areas, kitchen, guest suite and double garage.",
+      },
+      {
+        id: "first",
+        slug: "floor-plans/first-floor",
+        tab: "First",
+        title: "First Floor",
+        area: "2,667.40 sq.ft.",
+        outdoor: "Balcony / Terrace — 286.00 sq.ft.",
+        alt: "First floor plan of the Wave Crest villa, showing bedroom suites with en-suite bathrooms, dressing rooms and a sea-facing terrace.",
+      },
+      {
+        id: "second",
+        slug: "floor-plans/second-floor",
+        tab: "Second",
+        title: "Second Floor",
+        area: "1,656.35 sq.ft.",
+        outdoor: "Balcony / Terrace — 392.78 sq.ft.",
+        alt: "Second floor plan of the Wave Crest villa, showing the master suite, lounge and roof terrace.",
+      },
+    ],
+  },
+
+  gallery: {
+    eyebrow: "Gallery",
+    heading: "Inside Wave Crest",
+    note: "Tap any image to view full screen.",
+  },
+
+  architecture: {
+    eyebrow: "Wave Crest",
+    heading: "Architecture Inspired by the Coast.",
+    body: [
+      "Wave Crest is defined by sophisticated architectural layering, natural textures and warm material tones. Designed by LW Design Group, the residence has been conceived to create a seamless relationship between architecture and its beachfront environment.",
+      "Large openings and expansive terraces maximise the relationship with the sea, while the villa's multiple living and entertaining spaces provide distinct areas for family life, hosting and private retreat.",
+    ],
+    closing: [
+      "Contemporary architecture.",
+      "Private beachfront.",
+      "Uninterrupted coastal living.",
+    ],
+  },
+
+  frond: {
+    eyebrow: "Frond A",
+    heading: "A Prime Position on Palm Jebel Ali.",
+    body: "Location within Palm Jebel Ali matters. Positioned on Frond A, the residence sits within the first group of private residential fronds forming this new waterfront destination.",
+    callout: {
+      heading: "A High-Numbered Position on the Frond.",
+      body: "The residence sits further along Frond A, away from the frond entrance. This means greater privacy, less passing traffic, and a quieter, more secluded stretch of beach. It is one of the most sought-after positions on any residential frond.",
+    },
+    closing:
+      "The setting combines the privacy of a residential frond with direct access to the coastline, creating a fundamentally limited type of Dubai real estate: a private villa, on a private residential frond, directly on the beach.",
+  },
+
+  location: {
+    eyebrow: "Perfectly Positioned",
+    heading: "Between the Gulf and the City.",
+    body: [
+      "Palm Jebel Ali reaches out from Dubai's southern coastline, west of Dubai Marina and Palm Jumeirah. The frond system carries the residence into open water while keeping the city within an easy drive.",
+      "Sheikh Zayed Road connects the island to the rest of Dubai. Al Maktoum International Airport is roughly twenty minutes away, Dubai Marina around twenty-five, and Downtown Dubai about forty.",
+    ],
+    /* The map pin's own label lives in content/map-points.mjs */
+    legendHeading: "Drive times",
+    note: "Indicative drive times in typical traffic. Map data © OpenStreetMap contributors.",
+  },
+
+  masterplan: {
+    eyebrow: "Palm Jebel Ali",
+    heading: "Dubai's Next Waterfront Landmark.",
+    body: [
+      "Palm Jebel Ali represents the next chapter of Dubai's waterfront development. Created by Nakheel, the destination has been master-planned around an extensive coastline, residential fronds, beaches, landscaped communities and future lifestyle destinations.",
+      "With 16 fronds and more than 90 kilometres of beachfront, it significantly expands Dubai's luxury waterfront landscape.",
+    ],
+    counters: [
+      { value: 16, suffix: "", label: "Fronds" },
+      { value: 90, suffix: "+", label: "km Beachfront" },
+    ],
+    closing: ["Space.", "Privacy.", "Beachfront.", "Scarcity."],
+  },
+
+  investment: {
+    eyebrow: "The Investment Perspective",
+    heading: "More Than a Luxury Home.",
+    body: [
+      "Prime beachfront land in Dubai is inherently limited. Palm Jebel Ali introduces a new supply of private beachfront residences, but the number of villas occupying direct positions along individual residential fronds remains naturally finite.",
+    ],
+    checklist: [
+      "Direct beachfront position",
+      "Frond A location",
+      "High villa number on the frond",
+      "Large 7,640 sq.ft. plot",
+      "8,368 sq.ft. residence",
+      "Architect-designed Beach Collection villa",
+      "5-bedroom configuration",
+      "Nakheel master development",
+    ],
+    closing:
+      "A residence designed not only around how it is lived in today, but around the long-term value of owning irreplaceable waterfront land.",
+  },
+
+  glance: {
+    eyebrow: "At a Glance",
+    heading: "The Specification.",
+    rows: [
+      { label: "Palm Jebel Ali", value: "Frond A" },
+      { label: "Collection", value: "Beach Collection" },
+      { label: "Design", value: "Wave Crest" },
+      { label: "Position on Frond", value: "High Villa Number" },
+      { label: "Bedrooms", value: "5" },
+      { label: "Property Area", value: "8,368 sq.ft." },
+      { label: "Plot Area", value: "7,640 sq.ft." },
+      { label: "Position", value: "Direct Beachfront" },
+      { label: "Asking Price", value: "AED 24,500,000", emphasis: true },
+    ] as ReadonlyArray<{ label: string; value: string; emphasis?: boolean }>,
+  },
+
+  enquiry: {
+    eyebrow: "Private Enquiries",
+    heading: "Secure Your Position on Palm Jebel Ali.",
+    body: "For complete property details, payment information and a confidential discussion regarding this residence, contact:",
+    note: "Private consultation available upon request.",
+    contact: {
+      phone: "Phone",
+      whatsapp: "WhatsApp",
+      email: "Email",
+    },
+    form: {
+      name: "Full Name",
+      email: "Email",
+      phone: "Phone",
+      preferred: "Preferred contact method",
+      methods: ["WhatsApp", "Call", "Email"] as const,
+      message: "Message",
+      messageOptional: "optional",
+      submit: "Request Private Details",
+      submitting: "Sending…",
+      successHeading: "Thank you.",
+      successBody:
+        "Your enquiry has been received. Tara will be in touch personally, usually within one business day.",
+      successAgain: "Send another enquiry",
+      whatsappCta: "Message on WhatsApp",
+      errors: {
+        name: "Please enter your full name.",
+        email: "Please enter a valid email address.",
+        phone: "Please enter a valid phone number.",
+        generic: "Something went wrong. Please try again, or message on WhatsApp.",
+      },
+    },
+  },
+
+  permit: {
+    label: "DLD Permit",
+    scanLabel: "DLD Permit · Scan to verify",
+    alt: "Dubai Land Department permit QR code for this listing. Scan to verify the listing with the DLD.",
+  },
+
+  footer: {
+    tagline: "Palm Jumeirah, Dubai",
+    disclaimer:
+      "Imagery is developer-supplied architectural rendering and is indicative. All details subject to availability and confirmation.",
+  },
+} as const;
+
+/** Photo assignments — slug, alt text and which section each render belongs to. */
+export const photos = [
+  {
+    slug: "hero-beachfront",
+    alt: "Wave Crest villa seen from the beach, with the pool terrace, palm-shaded garden and the Arabian Gulf in the foreground.",
+    caption: "Beach elevation",
+    group: "Exterior",
+  },
+  {
+    slug: "exterior-arrival",
+    alt: "The street-side arrival elevation of the Wave Crest villa, in pale stone with a timber-clad upper storey.",
+    caption: "Arrival elevation",
+    group: "Exterior",
+  },
+  {
+    slug: "living-room",
+    alt: "Open-plan living room with a full-height joinery wall, floor-to-ceiling glazing and views through to the garden.",
+    caption: "Living room",
+    group: "Interiors",
+  },
+  {
+    slug: "dining-kitchen",
+    alt: "Dining table and kitchen island in pale oak, opening onto the sea-facing terrace.",
+    caption: "Dining & kitchen",
+    group: "Interiors",
+  },
+  {
+    slug: "master-bedroom",
+    alt: "Master bedroom at dusk, opening onto a private terrace above the water.",
+    caption: "Master bedroom",
+    group: "Interiors",
+  },
+  {
+    slug: "master-bathroom",
+    alt: "Master bathroom with a freestanding bath, stone vanity and a walk-through dressing room.",
+    caption: "Master bathroom",
+    group: "Interiors",
+  },
+  {
+    slug: "family-room",
+    alt: "Multi-purpose family room arranged as a lounge and private gym, facing the water.",
+    caption: "Family room",
+    group: "Interiors",
+  },
+  {
+    slug: "guest-bathroom",
+    alt: "Guest bathroom in travertine, with a walk-in rain shower and recessed lit niches.",
+    caption: "Guest bathroom",
+    group: "Interiors",
+  },
+] as const;
+
+export type PhotoSlug = (typeof photos)[number]["slug"];
+
+export const photo = (slug: PhotoSlug) => {
+  const found = photos.find((p) => p.slug === slug);
+  if (!found) throw new Error(`Unknown photo: ${slug}`);
+  return found;
+};
