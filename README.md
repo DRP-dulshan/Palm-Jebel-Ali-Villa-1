@@ -9,20 +9,54 @@ npm run dev      # http://localhost:3000
 npm run build && npm start
 ```
 
-## Before going live — still to fill in
+## Before going live
 
-Everything editable lives in **`content/site.ts`**. Tara's contact details are
-wired up; one thing remains:
+Leads are emailed to **office@dubairapidproperties.com**. That is the default
+in the API route, and `.env.local` sets it explicitly via `LEAD_EMAIL`.
 
-| Field | What it is |
-| --- | --- |
-| `url` | The live domain — this drives the Open Graph / WhatsApp preview |
+One thing is still required: **`RESEND_API_KEY`**. Put it in `.env.local`
+locally and in the Vercel project's environment variables for production.
 
-**Set `url` before sharing the link.** Open Graph image URLs have to be
-absolute, so the WhatsApp preview only renders once the real domain is in.
+| Variable | Required | Notes |
+| --- | --- | --- |
+| `RESEND_API_KEY` | **Yes** | From https://resend.com/api-keys |
+| `LEAD_EMAIL` | No | Defaults to office@dubairapidproperties.com |
+| `LEAD_FROM` | Recommended | Sender address — see the warning below |
 
-The DLD permit QR replaces the old RERA/BRN text line — it appears in the
-At a Glance section and in the footer.
+### The sender domain is not verified yet
+
+Tested live: sending to `office@dubairapidproperties.com` currently fails with
+
+> The dubairapidproperties.com domain is not verified.
+
+Until that is fixed, Resend will only deliver **to the account owner**
+(`dulshan@dubairapidproperties.com`) and only **from** its shared sender. That
+is what `.env.local` is set to, and a live test lead was delivered that way.
+
+**To get leads into the office inbox**, add `dubairapidproperties.com` at
+https://resend.com/domains, add the DNS records it gives you, wait for
+"Verified", then swap the two commented lines in `.env.local`:
+
+```
+LEAD_EMAIL=office@dubairapidproperties.com
+LEAD_FROM="Wave Crest <leads@dubairapidproperties.com>"
+```
+
+Set the same three variables in the Vercel project for production.
+
+Without a key the behaviour differs by environment, deliberately:
+
+- **Development** — the lead is logged to the console and the form reports
+  success, so you can work on the form with no setup.
+- **Production** — the route returns 502 and the visitor sees the error.
+  Quietly logging a lead the visitor was told we received is how leads get
+  lost, so it fails loudly instead.
+
+Also set `url` in `content/site.ts` to the live domain — Open Graph image URLs
+must be absolute, so the social preview only renders once it is in.
+
+**No personal contact details appear anywhere on the site or in the config.**
+Every CTA scrolls to the enquiry form.
 
 ## Editing the copy
 
@@ -49,16 +83,19 @@ Three levels — Ground, First and Second — in `public/images/floor-plans/`,
 shown as tabs in the Floor Plans section with a pinch-zoom fullscreen viewer.
 They are deliberately kept out of the photo gallery.
 
-The originals are **screenshots**, so each sheet is only ~620px wide and the
-drawing itself ~323px after cropping. The build crops off the blue area table
-(those figures are re-rendered in the page's own typography) and frames all
-three levels to one shared bounding box so the levels stay at a consistent
-relative scale. Display width is capped so the upscale stays modest.
+The sources are the 1600x1600 sheets in `Floor Plan/New Floor Plan/`. The
+build trims all three to a **shared** bounding box so the levels keep their
+true relative scale, upscales 2.5x and sharpens lightly. Output is
+~2300x3650 WebP at quality 95, around 400-500KB each — sharp well past the
+displayed size and through the fullscreen zoom.
 
-**If higher-resolution floor plans exist — a PDF or the original CAD export —
-drop them in and re-run `npm run images`.** They will render noticeably
-sharper, especially when zoomed. Level areas live in `content/listing.ts`
-under `floorPlans.levels`.
+An earlier pass worked from low-resolution screenshots; Real-ESRGAN was tried
+on those and **rejected**, because it invented detail (stippled tree canopies
+became angular shards, floor hatching was smoothed away). Fabricated geometry
+on a floor plan is a worse failure than a soft one. The current sheets are
+high enough resolution that none of that is needed.
+
+Level areas live in `content/listing.ts` under `floorPlans.levels`.
 
 ## Images
 
@@ -104,6 +141,14 @@ Pins, drive times and the villa's own position are in
 [`content/map-points.mjs`](content/map-points.mjs) as real lat/lon — move a pin
 by editing the numbers and re-running the script.
 
+**Frond A** was located by registering the supplied Google Maps screenshot
+against the OSM coastline: a scale/offset search found the best fit at
+117 px/km (IoU 0.39, a clear peak), which put Google's Frond A marker at
+25.00221 / 55.00024. The villa marker is snapped onto the nearest frond land
+from there. At the rendered size the palm is ~150px wide, so a frond is about
+2px — the marker reads as "eastern fan of Palm Jebel Ali", which is what the
+screenshot shows.
+
 The map ships as a **static SVG file**, not inline markup: ~90KB of paths in
 the page HTML cost 0.3s of mobile LCP (92 → 89). It is lazy-loaded below the
 fold instead. Two cuts are generated — the full map with place labels for wide
@@ -144,13 +189,33 @@ darkens the left column the copy occupies and clears by 78% across, so the
 villa keeps its brightness. Measured worst case is now **4.7:1** across every
 hero element, verified per-pixel rather than by sampling.
 
-## Accessibility notes
+## Palette
 
-The brand accent `#f47b49` only reaches 2.7:1 against white, so it is used as a
-**fill** colour with dark `#2e2e2e` text on top (5.0:1). Where the accent has to
-be the text or icon colour on a light background, the darkened
-`--color-accent-text` (`#b3501d`, 5.0:1) is used instead. Both are defined in
-`app/globals.css`.
+Lifted from the official Palm Jebel Ali site's own CSS custom properties and
+declared as tokens in `app/globals.css`:
+
+| Token | Value | From | Used for |
+| --- | --- | --- | --- |
+| `ink` | `#0d2638` | `--midnight-blue` / `--cta` | Body text, dark sections, button fill |
+| `ink-soft` | `#33495a` | derived | Body copy |
+| `ink-mute` | `#6e6555` | `--dark-tk`, darkened | Labels and eyebrows |
+| `stone-900` | `#0f1c26` | `--midnight-blue-3` | Deepest sections |
+| `teal` | `#005575` | `--midnight-blue-4` | Sea tones |
+| `teal-deep` | `#00617f` | `--hover` | Button hover |
+| `sky` | `#72c8dc` | `--sky-blue` | Light accent on navy |
+| `sand-50` | `#f5f1e7` | `--floral-white` | Page background |
+| `sand-100/200/300` | `#ece7db` / `#e6e1d6` / `#e0d4c1` | — | Alternating sections |
+| `accent` | `#bd9e70` | `--sky-blue-2` | Gold details, dots, rules |
+| `accent-text` | `#7a6236` | derived | Accent-coloured type on light |
+
+Gold is a **fill** colour: at 2.3:1 on cream it cannot carry small text, so
+`accent-text` is the darkened variant (5.1:1) for accent type and icons.
+Buttons are navy with cream text (13.8:1).
+
+Their headings use Nakheel's own brand font plus the Adobe Fonts faces
+`meno-banner` and `petala-pro`, none of which are licensable here. Cormorant
+Garamond and Inter are kept as the closest equivalents, matching the *style*:
+light serif headings, uppercase tracked labels, airy spacing.
 
 ## Lighthouse
 

@@ -40,7 +40,7 @@ export default function StickyBar() {
         <a
           href="#enquire"
           tabIndex={shown ? 0 : -1}
-          className="eyebrow flex items-center justify-center bg-accent px-4 py-4 text-center text-ink"
+          className="eyebrow flex items-center justify-center bg-ink px-4 py-4 text-center text-sand-50"
         >
           {listing.hero.cta}
         </a>

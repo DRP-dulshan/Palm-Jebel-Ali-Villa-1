@@ -8,7 +8,7 @@ const logo = (manifest as Record<string, { width: number; height: number }>)[
  * The Nakheel wordmark, reversed to white by the image build — the supplied
  * file is dark navy for light backgrounds. It must therefore always sit on a
  * dark background: the header keeps a scrim over the hero and turns solid
- * #2e2e2e on scroll, and the footer is #2e2e2e.
+ * navy (#0d2638) on scroll, and the footer is navy.
  */
 export default function Logo({
   className = "",

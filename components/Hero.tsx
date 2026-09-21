@@ -129,7 +129,7 @@ export default function Hero() {
           <div className={`mt-7 ${rise} sm:mt-9`} style={{ animationDelay: "600ms" }}>
             <a
               href="#enquire"
-              className="eyebrow inline-flex w-full items-center justify-center bg-accent px-8 py-4 text-ink transition-colors duration-300 hover:bg-accent-hover sm:w-auto"
+              className="eyebrow inline-flex w-full items-center justify-center bg-ink px-8 py-4 text-sand-50 transition-colors duration-300 hover:bg-teal-deep sm:w-auto"
             >
               {hero.cta}
             </a>

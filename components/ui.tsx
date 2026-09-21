@@ -52,7 +52,7 @@ export function Cta({
 } & React.AnchorHTMLAttributes<HTMLAnchorElement>) {
   const styles = {
     solid:
-      "bg-accent text-ink hover:bg-accent-hover border border-transparent",
+      "bg-ink text-sand-50 hover:bg-teal-deep border border-transparent",
     outline:
       "border border-ink/25 text-ink hover:border-accent hover:text-accent-text bg-transparent",
     light:

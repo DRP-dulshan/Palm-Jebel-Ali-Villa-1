@@ -311,24 +311,24 @@ const paths = (list, attrs) =>
   list.map((d) => `<path d="${d}" ${attrs}/>`).join("");
 
 const svg = (withLabels) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${out.viewBox}" preserveAspectRatio="xMinYMid slice">
-<rect width="${VIEW.w}" height="${VIEW.h}" fill="#15130f"/>
-<defs><radialGradient id="g"><stop offset="0%" stop-color="#f47b49" stop-opacity=".3"/><stop offset="100%" stop-color="#f47b49" stop-opacity="0"/></radialGradient></defs>
-<path d="${out.land}" fill="#2a2621"/>
-${paths(out.coast, 'fill="#2a2621"')}
-${paths(out.roads, 'fill="none" stroke="#6b645c" stroke-width="1.6" stroke-linecap="round" opacity=".7"')}
-${paths([...out.worldIslands, ...out.palmJumeirah], 'fill="#39332c"')}
+<rect width="${VIEW.w}" height="${VIEW.h}" fill="#0a151d"/>
+<defs><radialGradient id="g"><stop offset="0%" stop-color="#bd9e70" stop-opacity=".32"/><stop offset="100%" stop-color="#bd9e70" stop-opacity="0"/></radialGradient></defs>
+<path d="${out.land}" fill="#15303f"/>
+${paths(out.coast, 'fill="#15303f"')}
+${paths(out.roads, 'fill="none" stroke="#4a6b7d" stroke-width="1.6" stroke-linecap="round" opacity=".7"')}
+${paths([...out.worldIslands, ...out.palmJumeirah], 'fill="#1e455a"')}
 <circle cx="${out.villa.x}" cy="${out.villa.y}" r="230" fill="url(#g)"/>
-${paths(out.palmJebelAli, 'fill="#f47b49"')}
-${out.points.map((p) => `<circle cx="${p.x}" cy="${p.y}" r="11" fill="#efe9e0"/><text x="${p.x}" y="${p.y}" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" font-family="system-ui,sans-serif" fill="#1f1d1b">${p.n}</text>${
+${paths(out.palmJebelAli, 'fill="#bd9e70"')}
+${out.points.map((p) => `<circle cx="${p.x}" cy="${p.y}" r="11" fill="#f5f1e7"/><text x="${p.x}" y="${p.y}" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" font-family="system-ui,sans-serif" fill="#0d2638">${p.n}</text>${
   withLabels
-    ? `<text x="${p.align === "right" ? p.x + 19 : p.x - 19}" y="${p.y}" text-anchor="${p.align === "right" ? "start" : "end"}" dominant-baseline="central" font-size="15" font-family="system-ui,sans-serif" fill="#d9d2c7">${esc(p.label)}</text>`
+    ? `<text x="${p.align === "right" ? p.x + 19 : p.x - 19}" y="${p.y}" text-anchor="${p.align === "right" ? "start" : "end"}" dominant-baseline="central" font-size="15" font-family="system-ui,sans-serif" fill="#cfd8de">${esc(p.label)}</text>`
     : ""
 }`).join("")}
-<circle cx="${out.villa.x}" cy="${out.villa.y}" r="28" fill="none" stroke="#f47b49" stroke-width="1.5" opacity=".5"/>
+<circle cx="${out.villa.x}" cy="${out.villa.y}" r="28" fill="none" stroke="#bd9e70" stroke-width="1.5" opacity=".5"/>
 <circle cx="${out.villa.x}" cy="${out.villa.y}" r="8" fill="#fff"/>
-<path d="M${out.villa.x - 20} ${out.villa.y - 20}L${LABEL.x + 150} ${LABEL.y + 30}L${LABEL.x} ${LABEL.y + 30}" fill="none" stroke="#f47b49" stroke-width="1.5" opacity=".85"/>
+<path d="M${out.villa.x - 20} ${out.villa.y - 20}L${LABEL.x + 150} ${LABEL.y + 30}L${LABEL.x} ${LABEL.y + 30}" fill="none" stroke="#bd9e70" stroke-width="1.5" opacity=".85"/>
 <text x="${LABEL.x}" y="${LABEL.y}" font-size="46" fill="#fff" font-family="Cormorant Garamond,Georgia,serif">${esc(villaPin.label)}</text>
-<text x="${LABEL.x}" y="${LABEL.y + 22}" font-size="15" letter-spacing="2.6" font-family="system-ui,sans-serif" fill="#f47b49">${esc(villaPin.sub.toUpperCase())}</text>
+<text x="${LABEL.x}" y="${LABEL.y + 22}" font-size="15" letter-spacing="2.6" font-family="system-ui,sans-serif" fill="#bd9e70">${esc(villaPin.sub.toUpperCase())}</text>
 </svg>`;
 
 const LABEL = { x: out.villa.x - 175, y: out.villa.y - 215 };

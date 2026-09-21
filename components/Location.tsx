@@ -6,7 +6,6 @@ import Reveal from "./Reveal";
 import { Container, Eyebrow, Section } from "./ui";
 import { listing } from "@/content/listing";
 import { CheckIcon } from "./icons";
-import PermitQr from "./PermitQr";
 
 /* ---- 6. Frond A ------------------------------------------------------ */
 
@@ -276,12 +275,6 @@ export function AtAGlance() {
           </dl>
         </Reveal>
 
-        {/* DLD permit — lets a buyer verify the listing straight from the page */}
-        <Reveal delay={160} className="mt-10">
-          <div className="inline-flex border border-ink/12 bg-sand-50 p-5 sm:p-6">
-            <PermitQr size={104} label={listing.permit.scanLabel} />
-          </div>
-        </Reveal>
       </Container>
     </Section>
   );

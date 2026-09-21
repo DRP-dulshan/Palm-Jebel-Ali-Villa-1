@@ -164,9 +164,47 @@ export const listing = {
       "Architect-designed Beach Collection villa",
       "5-bedroom configuration",
       "Nakheel master development",
+      "50% of payment plan already completed",
     ],
     closing:
       "A residence designed not only around how it is lived in today, but around the long-term value of owning irreplaceable waterfront land.",
+  },
+
+  paymentPlan: {
+    eyebrow: "Payment Plan",
+    heading: "50% Already Paid. 50% Remaining.",
+    sub: "The original owner has already completed 50% of the developer payment plan. The remaining balance continues on the original Nakheel schedule through to November 2028.",
+    cards: [
+      { label: "Paid to Date", value: "50%" },
+      { label: "Remaining", value: "50%" },
+      { label: "Next Instalment", value: "10%", detail: "15 December 2026" },
+    ],
+    progressLabel: "50% of purchase price paid",
+    dividerLabel: "50% paid to date",
+    scheduleHeading: "The Schedule",
+    columns: { number: "No.", date: "Date", percent: "Share", status: "Status" },
+    paidLabel: "Paid",
+    remainingLabel: "Remaining",
+    /*
+     * Percentages are of the ORIGINAL developer purchase price, not the
+     * asking price. Never render an AED figure against an instalment.
+     */
+    schedule: [
+      { number: 1, date: "13 Nov 2024", percent: "20%", paid: true },
+      { number: 2, date: "15 Apr 2025", percent: "5%", paid: true },
+      { number: 3, date: "15 Aug 2025", percent: "5%", paid: true },
+      { number: 4, date: "15 Dec 2025", percent: "10%", paid: true },
+      { number: 5, date: "15 Apr 2026", percent: "5%", paid: true },
+      { number: 6, date: "15 Aug 2026", percent: "5%", paid: true },
+      { number: 7, date: "15 Dec 2026", percent: "10%", paid: false },
+      { number: 8, date: "15 Apr 2027", percent: "5%", paid: false },
+      { number: 9, date: "15 Aug 2027", percent: "10%", paid: false },
+      { number: 10, date: "15 Nov 2027", percent: "5%", paid: false },
+      { number: 11, date: "15 Nov 2028", percent: "20%", paid: false },
+    ],
+    disclaimer:
+      "Percentages refer to the original developer purchase price. Dates are estimated as per the developer's payment schedule. Full payment details available upon request.",
+    cta: "Discuss the Payment Plan",
   },
 
   glance: {
@@ -181,52 +219,68 @@ export const listing = {
       { label: "Property Area", value: "8,368 sq.ft." },
       { label: "Plot Area", value: "7,640 sq.ft." },
       { label: "Position", value: "Direct Beachfront" },
+      { label: "Payment Plan", value: "50% Paid · 50% Remaining" },
       { label: "Asking Price", value: "AED 24,500,000", emphasis: true },
     ] as ReadonlyArray<{ label: string; value: string; emphasis?: boolean }>,
   },
 
+  alternatives: {
+    eyebrow: "Not Quite the One?",
+    heading: "Looking for a Different Villa?",
+    body: "Beyond this residence, our team has access to beachfront and coral villas across every frond of Palm Jebel Ali, as well as Dubai's most exclusive waterfront addresses. Tell us what you're looking for and we'll find it for you.",
+    cta: "Tell Us What You're Looking For",
+  },
+
   enquiry: {
     eyebrow: "Private Enquiries",
-    heading: "Secure Your Position on Palm Jebel Ali.",
-    body: "For complete property details, payment information and a confidential discussion regarding this residence, contact:",
+    heading: "Register Your Interest",
+    sub: "Leave your details and our team will contact you with full property details, the payment plan and a private consultation.",
     note: "Private consultation available upon request.",
-    contact: {
-      phone: "Phone",
-      whatsapp: "WhatsApp",
-      email: "Email",
-    },
     form: {
+      title: "Title",
+      titles: ["Mr", "Mrs", "Ms"] as const,
       name: "Full Name",
+      phone: "Contact Number",
       email: "Email",
-      phone: "Phone",
-      preferred: "Preferred contact method",
-      methods: ["WhatsApp", "Call", "Email"] as const,
+      interest: "I'm interested in",
+      interests: [
+        { id: "this-villa", label: "This villa: Wave Crest, Frond A" },
+        { id: "another-pja", label: "Another villa on Palm Jebel Ali" },
+        { id: "other-waterfront", label: "Other Dubai waterfront property" },
+      ],
+      /** Revealed for the second and third options */
+      area: "Preferred frond / area",
+      bedrooms: "Bedrooms",
+      bedroomOptions: ["3", "4", "5", "6+"] as const,
+      budget: "Budget range",
+      budgetOptions: [
+        "AED 10–20M",
+        "AED 20–30M",
+        "AED 30–50M",
+        "AED 50M+",
+      ] as const,
       message: "Message",
       messageOptional: "optional",
-      submit: "Request Private Details",
+      consent: "I agree to be contacted about this and similar properties.",
+      optional: "optional",
+      submit: "Register Your Interest",
       submitting: "Sending…",
       successHeading: "Thank you.",
-      successBody:
-        "Your enquiry has been received. Tara will be in touch personally, usually within one business day.",
+      successBody: "Our team will be in touch shortly.",
       successAgain: "Send another enquiry",
-      whatsappCta: "Message on WhatsApp",
       errors: {
         name: "Please enter your full name.",
         email: "Please enter a valid email address.",
-        phone: "Please enter a valid phone number.",
-        generic: "Something went wrong. Please try again, or message on WhatsApp.",
+        phone: "Please enter a valid contact number.",
+        interest: "Please choose what you're interested in.",
+        consent: "Please agree to be contacted so we can reply.",
+        generic: "Something went wrong. Please try again in a moment.",
       },
     },
   },
 
-  permit: {
-    label: "DLD Permit",
-    scanLabel: "DLD Permit · Scan to verify",
-    alt: "Dubai Land Department permit QR code for this listing. Scan to verify the listing with the DLD.",
-  },
-
   footer: {
-    tagline: "Palm Jumeirah, Dubai",
+    tagline: "Wave Crest · Palm Jebel Ali, Dubai",
     disclaimer:
       "Imagery is developer-supplied architectural rendering and is indicative. All details subject to availability and confirmation.",
   },

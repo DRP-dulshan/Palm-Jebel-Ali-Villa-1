@@ -42,7 +42,7 @@ export default function Header() {
 
         <a
           href="#enquire"
-          className="eyebrow hidden items-center border border-white/50 px-6 py-3 text-white transition-colors duration-300 hover:border-accent hover:bg-accent hover:text-ink sm:inline-flex"
+          className="eyebrow hidden items-center border border-white/50 px-6 py-3 text-white transition-colors duration-300 hover:border-sand-50 hover:bg-sand-50 hover:text-ink sm:inline-flex"
         >
           {listing.hero.cta}
         </a>

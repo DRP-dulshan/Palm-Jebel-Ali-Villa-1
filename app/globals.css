@@ -1,28 +1,39 @@
 @import "tailwindcss";
 
 @theme {
-  /* Brand */
-  /*
-   * #f47b49 is the brand accent and stays the fill colour everywhere.
-   * White text on it is only 2.7:1, so accent fills carry ink-dark text
-   * and hover lifts to a lighter tint rather than a darker one.
-   * accent-text is the darkened variant used when the accent itself has
-   * to be the text or icon colour on a light background (4.9:1).
-   */
-  --color-accent: #f47b49;
-  --color-accent-hover: #f89468;
-  --color-accent-text: #b3501d;
-  --color-ink: #2e2e2e;
-  --color-ink-soft: #55514c;
-  --color-ink-mute: #8a837c;
+  /* ------------------------------------------------------------------
+   * Palette lifted from the official Palm Jebel Ali site's own CSS custom
+   * properties (--midnight-blue, --floral-white, --sky-blue-2 and friends).
+   * Deep navy, warm cream and sand: calm, coastal, no orange.
+   * ------------------------------------------------------------------ */
 
-  /* Warm sand / stone supporting neutrals */
-  --color-sand-50: #fdfbf8;
-  --color-sand-100: #f8f4ee;
-  --color-sand-200: #efe8df;
-  --color-sand-300: #e2d9cd;
-  --color-stone-700: #3a3734;
-  --color-stone-900: #1f1d1b;
+  /* Navy — text, dark sections, and the primary button fill */
+  --color-ink: #0d2638;        /* --midnight-blue / --cta */
+  --color-ink-soft: #33495a;   /* body copy, derived */
+  --color-ink-mute: #6e6555;   /* labels; --dark-tk darkened to clear 4.5:1 */
+
+  --color-stone-900: #0f1c26;  /* --midnight-blue-3, deepest section */
+  --color-stone-700: #1b3244;
+
+  /* Sea */
+  --color-teal: #005575;       /* --midnight-blue-4 */
+  --color-teal-deep: #00617f;  /* --hover */
+  --color-sky: #72c8dc;        /* --sky-blue, light accent on navy */
+
+  /* Sand — page backgrounds */
+  --color-sand-50: #f5f1e7;    /* --floral-white */
+  --color-sand-100: #ece7db;
+  --color-sand-200: #e6e1d6;
+  --color-sand-300: #e0d4c1;
+
+  /*
+   * Gold is the accent, used sparingly for details. It is a FILL colour:
+   * at 2.3:1 on cream it cannot carry small text, so accent-text is the
+   * darkened variant (5.1:1) for accent-coloured type and icons on light.
+   */
+  --color-accent: #bd9e70;     /* --sky-blue-2, despite the name */
+  --color-accent-hover: #cbb089;
+  --color-accent-text: #7a6236;
 
   --font-serif: var(--font-cormorant), "Cormorant Garamond", Georgia, serif;
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;

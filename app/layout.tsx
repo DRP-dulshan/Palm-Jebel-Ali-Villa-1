@@ -24,7 +24,6 @@ export const metadata: Metadata = {
   title: listing.meta.title,
   description: listing.meta.description,
   applicationName: site.brand,
-  authors: [{ name: site.agent.name }],
   keywords: [
     "Palm Jebel Ali",
     "Frond A",
@@ -34,7 +33,6 @@ export const metadata: Metadata = {
     "Beach Collection",
     "Nakheel",
     "5 bedroom villa Dubai",
-    "Dubai Rapid Properties",
   ],
   alternates: { canonical: "/" },
   openGraph: {
@@ -67,7 +65,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#2e2e2e",
+  themeColor: "#0d2638",
   width: "device-width",
   initialScale: 1,
 };
@@ -92,12 +90,6 @@ const jsonLd = {
     price: 24500000,
     priceCurrency: "AED",
     availability: "https://schema.org/InStock",
-    seller: {
-      "@type": "RealEstateAgent",
-      name: site.agent.name,
-      worksFor: { "@type": "Organization", name: site.brand },
-      areaServed: "Dubai",
-    },
   },
 };
 

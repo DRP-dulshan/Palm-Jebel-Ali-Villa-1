@@ -104,9 +104,9 @@ export default function FloorPlans() {
 
             {/*
               Light neutral plate behind the drawing so the thin linework
-              keeps its contrast. The source sheets are screenshots, so the
-              drawings are only ~323px wide natively — the display width is
-              capped to keep the upscale modest and the lines crisp.
+              keeps its contrast. The sheets are upscaled 6x from the source
+              screenshots, so at ~1940px they stay sharp well past the
+              displayed size and through the fullscreen zoom.
             */}
             <div className="lg:col-span-8">
               <button
@@ -120,8 +120,8 @@ export default function FloorPlans() {
                   slug={level.slug}
                   alt={level.alt}
                   noBlur
-                  sizes="(max-width: 1024px) 88vw, 420px"
-                  className="mx-auto block w-full max-w-[420px]"
+                  sizes="(max-width: 1024px) 90vw, 620px"
+                  className="mx-auto block w-full max-w-[620px]"
                   imgClassName="object-contain"
                 />
               </button>
@@ -328,7 +328,7 @@ function PlanViewer({
             aria-current={i === index}
             className={`eyebrow border px-4 py-2 transition-colors ${
               i === index
-                ? "border-accent bg-accent text-ink"
+                ? "border-ink bg-ink text-sand-50"
                 : "border-sand-100/25 text-sand-100/70 hover:text-white"
             }`}
           >
@@ -360,7 +360,7 @@ function PlanViewer({
           }}
         >
           <img
-            src={`/images/${level.slug}.png`}
+            src={`/images/${level.slug}.webp`}
             alt={level.alt}
             draggable={false}
             className="max-h-[68svh] w-auto max-w-full bg-white object-contain p-2 select-none"

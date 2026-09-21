@@ -1,5 +1,4 @@
 import Logo from "./Logo";
-import PermitQr from "./PermitQr";
 import { Container } from "./ui";
 import { listing } from "@/content/listing";
 
@@ -23,6 +22,7 @@ export default function Footer() {
                 ["Gallery", "#gallery"],
                 ["Frond A", "#frond"],
                 ["Location", "#location"],
+                ["Payment Plan", "#payment-plan"],
                 ["Specification", "#specification"],
                 ["Enquire", "#enquire"],
               ].map(([label, href]) => (
@@ -39,17 +39,9 @@ export default function Footer() {
           </nav>
         </div>
 
-        <div className="mt-8 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
-          <p className="max-w-xl text-[0.75rem] leading-relaxed text-sand-100/60">
-            {listing.footer.disclaimer}
-          </p>
-          <PermitQr
-            size={96}
-            label={listing.permit.label}
-            align="center"
-            className="shrink-0 text-sand-100"
-          />
-        </div>
+        <p className="mt-8 max-w-xl text-[0.75rem] leading-relaxed text-sand-100/60">
+          {listing.footer.disclaimer}
+        </p>
       </Container>
     </footer>
   );
