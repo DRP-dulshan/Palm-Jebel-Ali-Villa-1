@@ -132,6 +132,7 @@ const out = {
   shoreLines: [],
   coast: [],
   palmJebelAli: [],
+  frondA: [],
   palmJumeirah: [],
   worldIslands: [],
   roads: [],
@@ -295,6 +296,71 @@ out.points = mapPoints.map((pt) => {
   out.villa = { ...villaPin, x: Math.round(x), y: Math.round(y) };
 }
 
+/*
+ * Frond A itself, highlighted.
+ *
+ * A dot alone cannot say WHICH frond: the whole palm is ~150px wide on the
+ * rendered map, so a marker covers several of them.
+ *
+ * OSM traces the entire frond array as ONE coastline way, so the individual
+ * fronds have to be cut out of it. Walking the polyline, the distance from
+ * the palm's centre rises to a peak at each frond tip and falls back between
+ * them — the troughs are the frond boundaries. That yields 16 segments,
+ * which is exactly how many fronds Palm Jebel Ali has.
+ */
+{
+  const km = (a, b) =>
+    Math.hypot((a.lat - b.lat) * 110.57, (a.lon - b.lon) * 100.8);
+  const mean = (g) => ({
+    lat: g.reduce((a, p) => a + p.lat, 0) / g.length,
+    lon: g.reduce((a, p) => a + p.lon, 0) / g.length,
+  });
+
+  // the way that traces the frond array is the one running nearest the villa
+  let array = null;
+  for (const w of windowWays) {
+    let nearest = Infinity;
+    for (const p of w.geometry) nearest = Math.min(nearest, km(p, villaPin));
+    if (!array || nearest < array.nearest) array = { nearest, geometry: w.geometry };
+  }
+
+  const g = array.geometry;
+  const centre = mean(g);
+  const radius = g.map((p) => km(p, centre));
+
+  // smooth, so noise in the outline does not read as a frond boundary
+  const SMOOTH = 5;
+  const smoothed = radius.map((_, i) => {
+    let sum = 0, n = 0;
+    for (let j = Math.max(0, i - SMOOTH); j <= Math.min(radius.length - 1, i + SMOOTH); j++) {
+      sum += radius[j]; n++;
+    }
+    return sum / n;
+  });
+
+  const troughs = [];
+  for (let i = 1; i < smoothed.length - 1; i++) {
+    if (smoothed[i] <= smoothed[i - 1] && smoothed[i] < smoothed[i + 1]) {
+      if (!troughs.length || i - troughs[troughs.length - 1] > 12) troughs.push(i);
+    }
+  }
+
+  let frond = null;
+  for (let i = 0; i < troughs.length - 1; i++) {
+    const seg = g.slice(troughs[i], troughs[i + 1] + 1);
+    let nearest = Infinity;
+    for (const p of seg) nearest = Math.min(nearest, km(p, villaPin));
+    if (!frond || nearest < frond.nearest) frond = { nearest, seg };
+  }
+
+  const pts = simplify(frond.seg.map((p) => project(p.lat, p.lon)), 0.15);
+  out.frondA.push(toPath(pts, false));
+  console.log(
+    `✓ frond A        ${troughs.length - 1} fronds found, picked the one ` +
+    `${(frond.nearest * 1000).toFixed(0)} m from the villa (${pts.length} pts)`
+  );
+}
+
 /* ---- Emit -----------------------------------------------------------
  * The geometry ships as a static SVG file rather than inline markup:
  * ~90KB of paths in the page HTML delayed the mobile LCP by 0.3s. The
@@ -319,13 +385,14 @@ ${paths(out.roads, 'fill="none" stroke="#4a6b7d" stroke-width="1.6" stroke-linec
 ${paths([...out.worldIslands, ...out.palmJumeirah], 'fill="#1e455a"')}
 <circle cx="${out.villa.x}" cy="${out.villa.y}" r="230" fill="url(#g)"/>
 ${paths(out.palmJebelAli, 'fill="#bd9e70"')}
+${paths(out.frondA, 'fill="none" stroke="#f5f1e7" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" opacity=".95"')}
 ${out.points.map((p) => `<circle cx="${p.x}" cy="${p.y}" r="11" fill="#f5f1e7"/><text x="${p.x}" y="${p.y}" text-anchor="middle" dominant-baseline="central" font-size="12" font-weight="500" font-family="system-ui,sans-serif" fill="#0d2638">${p.n}</text>${
   withLabels
     ? `<text x="${p.align === "right" ? p.x + 19 : p.x - 19}" y="${p.y}" text-anchor="${p.align === "right" ? "start" : "end"}" dominant-baseline="central" font-size="15" font-family="system-ui,sans-serif" fill="#cfd8de">${esc(p.label)}</text>`
     : ""
 }`).join("")}
 <circle cx="${out.villa.x}" cy="${out.villa.y}" r="28" fill="none" stroke="#bd9e70" stroke-width="1.5" opacity=".5"/>
-<circle cx="${out.villa.x}" cy="${out.villa.y}" r="8" fill="#fff"/>
+<circle cx="${out.villa.x}" cy="${out.villa.y}" r="5.5" fill="#fff"/>
 <path d="M${out.villa.x - 20} ${out.villa.y - 20}L${LABEL.x + 150} ${LABEL.y + 30}L${LABEL.x} ${LABEL.y + 30}" fill="none" stroke="#bd9e70" stroke-width="1.5" opacity=".85"/>
 <text x="${LABEL.x}" y="${LABEL.y}" font-size="46" fill="#fff" font-family="Cormorant Garamond,Georgia,serif">${esc(villaPin.label)}</text>
 <text x="${LABEL.x}" y="${LABEL.y + 22}" font-size="15" letter-spacing="2.6" font-family="system-ui,sans-serif" fill="#bd9e70">${esc(villaPin.sub.toUpperCase())}</text>

@@ -18,14 +18,13 @@ export const villaPin = {
   label: "Wave Crest",
   sub: "Palm Jebel Ali · Frond A",
   /*
-   * Frond A, located by registering the supplied Google Maps screenshot
-   * against the OSM coastline — best fit at 117 px/km, IoU 0.39, verified
-   * by overlaying the result. This is the position Google itself marks for
-   * Frond A, snapped onto the nearest frond land so the marker never
-   * falls between fronds.
+   * Frond A. Located by registering two separate Google Maps screenshots
+   * against the OSM coastline; both converged on the same point within
+   * ~18 m (best fits at 117 and 86 px/km). The nearest OSM coastline way
+   * — the frond's own outline — is 29 m away, so this sits on the frond.
    */
-  lat: 25.00194,
-  lon: 55.00340,
+  lat: 25.00205,
+  lon: 55.00026,
 };
 
 export const mapPoints = [
