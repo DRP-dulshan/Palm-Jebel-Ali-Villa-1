@@ -279,6 +279,13 @@ export const listing = {
     },
   },
 
+  thankYou: {
+    eyebrow: "Enquiry Received",
+    heading: "Thank You",
+    body: "Our team will contact you shortly.",
+    cta: "Back to the Residence",
+  },
+
   footer: {
     tagline: "Wave Crest · Palm Jebel Ali, Dubai",
     disclaimer:

@@ -1,12 +1,13 @@
 "use client";
 
 import { useEffect, useId, useState } from "react";
+import { useRouter } from "next/navigation";
 import { listing } from "@/content/listing";
 import { countries, defaultCountry } from "@/content/countries";
 
 type FieldKey = "name" | "email" | "phone" | "interest" | "consent";
 type Errors = Partial<Record<FieldKey, string>>;
-type Status = "idle" | "sending" | "sent" | "error";
+type Status = "idle" | "sending" | "error";
 
 const copy = listing.enquiry.form;
 
@@ -17,6 +18,7 @@ const fieldClass =
 const WIDER_INTERESTS: string[] = ["another-pja", "other-waterfront"];
 
 export default function EnquiryForm() {
+  const router = useRouter();
   const id = useId();
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Errors>({});
@@ -76,7 +78,13 @@ export default function EnquiryForm() {
     setStatus("sending");
     try {
       const params = new URLSearchParams(window.location.search);
-      const response = await fetch("/api/enquiry", {
+      /*
+       * Trailing slash on purpose: next.config sets trailingSlash, which
+       * applies to API routes too, so "/api/enquiry" answers 308. Posting to
+       * the canonical URL avoids the extra hop — and avoids relying on the
+       * client preserving the method and body across a redirect.
+       */
+      const response = await fetch("/api/enquiry/", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -101,48 +109,15 @@ export default function EnquiryForm() {
         }),
       });
       if (!response.ok) throw new Error(`Request failed: ${response.status}`);
-      form.reset();
-      setTitle("");
-      setInterest("");
-      setConsent(false);
-      setStatus("sent");
+      /*
+       * Stay in the "sending" state through the navigation: flipping back to
+       * idle first would flash the empty form before the page changes.
+       */
+      router.push("/thank-you/");
     } catch {
       setStatus("error");
     }
   };
-
-  if (status === "sent") {
-    return (
-      <div
-        className="border border-accent/40 bg-sand-50 px-8 py-14 text-center sm:px-12"
-        role="status"
-      >
-        <svg
-          viewBox="0 0 24 24"
-          fill="none"
-          stroke="currentColor"
-          strokeWidth={1}
-          strokeLinecap="round"
-          className="mx-auto h-12 w-12 text-accent-text"
-          aria-hidden="true"
-        >
-          <circle cx="12" cy="12" r="10" opacity={0.3} />
-          <path d="m7.5 12.5 3 3 6-6.5" />
-        </svg>
-        <h3 className="mt-6 font-serif text-3xl font-light">{copy.successHeading}</h3>
-        <p className="mx-auto mt-4 max-w-md text-[0.9375rem] leading-relaxed text-ink-soft">
-          {copy.successBody}
-        </p>
-        <button
-          type="button"
-          onClick={() => setStatus("idle")}
-          className="eyebrow mt-8 border-b border-accent-text pb-1 text-accent-text transition-opacity hover:opacity-70"
-        >
-          {copy.successAgain}
-        </button>
-      </div>
-    );
-  }
 
   return (
     <form onSubmit={onSubmit} noValidate className="relative space-y-9">

@@ -21,7 +21,7 @@ export default function LocationMap() {
     <Section id="location" tone="dark" className="overflow-hidden">
       <Container>
         <Reveal className="text-center">
-          <Eyebrow className="justify-center text-sand-100/50" withRule={false}>
+          <Eyebrow className="justify-center text-sand-100/65" withRule={false}>
             {location.eyebrow}
           </Eyebrow>
           <h2 className="mx-auto mt-7 max-w-3xl text-[clamp(2rem,5.5vw,3.5rem)] leading-[1.08] text-sand-50">
@@ -67,7 +67,7 @@ export default function LocationMap() {
       {/* Legend */}
       <Container className="mt-14 sm:mt-16">
         <Reveal>
-          <p className="eyebrow text-sand-100/50">{location.legendHeading}</p>
+          <p className="eyebrow text-sand-100/65">{location.legendHeading}</p>
           <ul className="mt-7 grid grid-cols-1 gap-x-10 gap-y-px sm:grid-cols-2 lg:grid-cols-3">
             {legend.points.map((p) => (
               <li
@@ -75,7 +75,7 @@ export default function LocationMap() {
                 className="flex items-baseline gap-3.5 border-b border-sand-100/10 py-3"
               >
                 <span
-                  className="eyebrow w-5 shrink-0 text-sand-100/40 lining-nums tabular-nums"
+                  className="eyebrow w-5 shrink-0 text-sand-100/60 lining-nums tabular-nums"
                   aria-hidden="true"
                 >
                   {p.n}
@@ -83,13 +83,13 @@ export default function LocationMap() {
                 <span className="flex-1 text-[0.9375rem] text-sand-100/80">
                   {p.label}
                 </span>
-                <span className="eyebrow shrink-0 text-sand-100/50 lining-nums tabular-nums">
+                <span className="eyebrow shrink-0 text-sand-100/65 lining-nums tabular-nums">
                   {p.minutes} min
                 </span>
               </li>
             ))}
           </ul>
-          <p className="mt-8 text-[0.75rem] leading-relaxed text-sand-100/40">
+          <p className="mt-8 text-[0.75rem] leading-relaxed text-sand-100/60">
             {location.note}
           </p>
         </Reveal>

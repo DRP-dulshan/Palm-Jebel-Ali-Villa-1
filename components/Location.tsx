@@ -93,7 +93,7 @@ export function Masterplan() {
       <Container>
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-20">
           <Reveal className="lg:col-span-5">
-            <Eyebrow className="text-sand-100/50">{masterplan.eyebrow}</Eyebrow>
+            <Eyebrow className="text-sand-100/65">{masterplan.eyebrow}</Eyebrow>
             <h2 className="mt-7 text-[clamp(2rem,5.5vw,3.5rem)] leading-[1.08] text-sand-50">
               {masterplan.heading}
             </h2>
@@ -122,7 +122,7 @@ export function Masterplan() {
                 <Counter to={counter.value} />
                 <span className="text-accent">{counter.suffix}</span>
               </dd>
-              <dt className="eyebrow mt-6 text-sand-100/55">{counter.label}</dt>
+              <dt className="eyebrow mt-6 text-sand-100/65">{counter.label}</dt>
             </Reveal>
           ))}
         </dl>

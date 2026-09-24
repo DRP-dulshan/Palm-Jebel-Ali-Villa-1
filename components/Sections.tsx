@@ -130,7 +130,7 @@ export function Architecture() {
       <Container>
         <div className="grid gap-14 lg:grid-cols-12 lg:gap-20">
           <Reveal className="lg:col-span-5">
-            <Eyebrow className="text-sand-100/50">{architecture.eyebrow}</Eyebrow>
+            <Eyebrow className="text-sand-100/65">{architecture.eyebrow}</Eyebrow>
             <h2 className="mt-7 text-[clamp(2rem,5.5vw,3.5rem)] leading-[1.08] text-sand-50">
               {architecture.heading}
             </h2>

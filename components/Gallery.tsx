@@ -174,7 +174,7 @@ function Lightbox({
 
       <div className="px-5 pb-8 pt-5 text-center sm:px-8">
         <p className="eyebrow text-sand-100">{current.caption}</p>
-        <p className="mx-auto mt-2 max-w-xl text-[0.8125rem] leading-relaxed text-sand-100/50">
+        <p className="mx-auto mt-2 max-w-xl text-[0.8125rem] leading-relaxed text-sand-100/65">
           {current.alt}
         </p>
         <p className="sr-only" aria-live="polite">

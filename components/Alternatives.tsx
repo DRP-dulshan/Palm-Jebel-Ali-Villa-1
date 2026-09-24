@@ -13,7 +13,7 @@ export default function Alternatives() {
     <Section id="alternatives" tone="dark">
       <Container width="narrow" className="text-center">
         <Reveal>
-          <Eyebrow className="justify-center text-sand-100/50" withRule={false}>
+          <Eyebrow className="justify-center text-sand-100/65" withRule={false}>
             {alternatives.eyebrow}
           </Eyebrow>
           <h2 className="mt-7 text-[clamp(2rem,5.5vw,3.25rem)] leading-[1.1] text-sand-50">
