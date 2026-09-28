@@ -22,6 +22,7 @@ locally and in the Vercel project's environment variables for production.
 | `RESEND_API_KEY` | **Yes** | From https://resend.com/api-keys |
 | `LEAD_EMAIL` | No | Defaults to office@dubairapidproperties.com |
 | `LEAD_FROM` | Recommended | Sender address — see the warning below |
+| `BITRIX_WEBHOOK_URL` | No | Bitrix24 inbound webhook base URL, **trailing slash required**. Carries an auth token, so server-only. Without it the CRM copy is skipped and leads are still emailed. |
 
 ### The sender domain is not verified yet
 
@@ -57,6 +58,34 @@ must be absolute, so the social preview only renders once it is in.
 
 **No personal contact details appear anywhere on the site or in the config.**
 Every CTA scrolls to the enquiry form.
+
+## Where leads go
+
+Every submission goes to two places, in parallel:
+
+1. **Email**, via Resend.
+2. **Bitrix24**, as a CRM lead (`crm.lead.add.json`).
+
+Only the email decides the HTTP response. A CRM outage is logged and otherwise
+ignored — the visitor still reaches `/thank-you/`, and a Bitrix problem never
+costs us the lead. Verified against a mock for all four cases: lead created,
+Bitrix returning an error body, Bitrix unreachable, and the variable unset.
+
+Note that **Bitrix answers HTTP 200 even for errors**, putting `{"error": ...}`
+in the body, so the status code alone is not trusted.
+
+### Campaign attribution
+
+`utm_source`, `utm_medium`, `utm_campaign`, `utm_content`, `utm_term` and
+`gclid` are captured from the **landing** URL into `sessionStorage`
+(`content/attribution.ts`) and sent with the form.
+
+First touch wins: browsing on to pages without the parameters, or arriving a
+second time on a different campaign link, will not overwrite what originally
+brought the visitor in.
+
+The five UTMs map to Bitrix's own `UTM_*` fields. `gclid` has no native field
+there, so it is written into `COMMENTS`.
 
 ## Editing the copy
 

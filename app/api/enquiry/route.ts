@@ -15,10 +15,20 @@ export type Lead = {
   budget: string;
   message: string;
   consent: boolean;
-  utm: { source: string; medium: string; campaign: string };
+  attribution: Attribution;
   pageUrl: string;
   receivedAt: string;
 };
+
+/** Campaign parameters captured on the visitor's landing page. */
+type Attribution = Partial<Record<
+  "utm_source" | "utm_medium" | "utm_campaign" | "utm_content" | "utm_term" | "gclid",
+  string
+>>;
+
+const ATTRIBUTION_FIELDS = [
+  "utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "gclid",
+] as const;
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 const clean = (v: unknown, max = 500) => String(v ?? "").trim().slice(0, max);
@@ -58,11 +68,15 @@ export async function POST(request: Request) {
     budget: clean(body.budget, 40),
     message: clean(body.message, 2000),
     consent: Boolean(body.consent),
-    utm: {
-      source: clean((body.utm as Record<string, unknown>)?.source, 120),
-      medium: clean((body.utm as Record<string, unknown>)?.medium, 120),
-      campaign: clean((body.utm as Record<string, unknown>)?.campaign, 120),
-    },
+    attribution: (() => {
+      const raw = (body.attribution ?? {}) as Record<string, unknown>;
+      const out: Attribution = {};
+      for (const f of ATTRIBUTION_FIELDS) {
+        const v = clean(raw[f], 250);
+        if (v) out[f] = v;
+      }
+      return out;
+    })(),
     pageUrl: clean(body.pageUrl, 500),
     receivedAt: dubaiTime(),
   };
@@ -79,8 +93,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ errors }, { status: 422 });
   }
 
-  const delivered = await deliverLead(lead);
-  if (!delivered) {
+  /*
+   * Both destinations are attempted together. Only the email decides the
+   * response: a CRM outage must never cost us the lead or show the visitor
+   * an error, so a Bitrix failure is logged and otherwise ignored.
+   */
+  const [emailed] = await Promise.all([deliverLead(lead), sendToBitrix(lead)]);
+
+  if (!emailed) {
     return NextResponse.json({ error: "Could not send." }, { status: 502 });
   }
 
@@ -136,12 +156,11 @@ async function deliverLead(lead: Lead): Promise<boolean> {
     return true;
   }
 
-  const utm =
-    lead.utm.source || lead.utm.medium || lead.utm.campaign
-      ? [lead.utm.source, lead.utm.medium, lead.utm.campaign]
-          .filter(Boolean)
-          .join(" · ")
-      : "";
+  const utm = ATTRIBUTION_FIELDS
+    .filter((f) => f !== "gclid")
+    .map((f) => lead.attribution[f])
+    .filter(Boolean)
+    .join(" · ");
 
   const html = `
     <div style="background:#f5f1e7;padding:32px">
@@ -160,6 +179,7 @@ async function deliverLead(lead: Lead): Promise<boolean> {
           ${row("Consent", lead.consent ? "Yes" : "No")}
           ${row("Received", lead.receivedAt)}
           ${row("Campaign", utm)}
+          ${row("gclid", lead.attribution.gclid ?? "")}
           ${row("Page", lead.pageUrl)}
         </table>
       </div>
@@ -181,6 +201,95 @@ async function deliverLead(lead: Lead): Promise<boolean> {
     return true;
   } catch (err) {
     console.error("[enquiry] could not reach Resend:", err);
+    return false;
+  }
+}
+
+
+/* ------------------------------------------------------------------
+ * BITRIX24
+ *
+ * Creates a CRM lead through an inbound webhook. The URL carries its own
+ * auth token, so it is a secret: it is read from BITRIX_WEBHOOK_URL on the
+ * server only and never reaches the browser.
+ *
+ * Failures here are deliberately swallowed — see the call site.
+ * ------------------------------------------------------------------ */
+
+const bitrixComments = (lead: Lead): string => {
+  const lines: string[] = [];
+
+  if (lead.message) lines.push(lead.message, "");
+
+  const field = (label: string, value: string) => {
+    if (value) lines.push(`${label}: ${value}`);
+  };
+
+  field("Interested in", lead.interest);
+  field("Preferred area", lead.area);
+  field("Bedrooms", lead.bedrooms);
+  field("Budget", lead.budget);
+  field("Consent to contact", lead.consent ? "Yes" : "No");
+  field("Received", lead.receivedAt);
+  field("Landing page", lead.pageUrl);
+  // Requested explicitly: the click id belongs in the notes, not a UTM field
+  field("gclid", lead.attribution.gclid ?? "");
+
+  return lines.join("\n");
+};
+
+async function sendToBitrix(lead: Lead): Promise<boolean> {
+  const base = process.env.BITRIX_WEBHOOK_URL;
+
+  if (!base) {
+    console.warn("[enquiry] BITRIX_WEBHOOK_URL not set — skipping the CRM lead.");
+    return false;
+  }
+
+  // The method is appended to the webhook base, which must end in a slash.
+  const endpoint = `${base.endsWith("/") ? base : base + "/"}crm.lead.add.json`;
+
+  const fields: Record<string, unknown> = {
+    TITLE: `Palm Jebel Ali Villa - ${lead.name}`,
+    NAME: lead.name,
+    PHONE: [{ VALUE: lead.phone, VALUE_TYPE: "WORK" }],
+    EMAIL: [{ VALUE: lead.email, VALUE_TYPE: "WORK" }],
+    SOURCE_ID: "WEB",
+    SOURCE_DESCRIPTION: "Google Ads - palm.nakheel.villas",
+    COMMENTS: bitrixComments(lead),
+    UTM_SOURCE: lead.attribution.utm_source ?? "",
+    UTM_MEDIUM: lead.attribution.utm_medium ?? "",
+    UTM_CAMPAIGN: lead.attribution.utm_campaign ?? "",
+    UTM_CONTENT: lead.attribution.utm_content ?? "",
+    UTM_TERM: lead.attribution.utm_term ?? "",
+  };
+
+  try {
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ fields }),
+    });
+
+    const payload = (await response.json().catch(() => null)) as
+      | { result?: number; error?: string; error_description?: string }
+      | null;
+
+    // Bitrix answers 200 with an error body, so the status alone proves nothing
+    if (!response.ok || !payload || payload.error || !payload.result) {
+      console.error(
+        "[enquiry] Bitrix did not create the lead:",
+        response.status,
+        payload?.error ?? "",
+        payload?.error_description ?? ""
+      );
+      return false;
+    }
+
+    console.log(`[enquiry] Bitrix lead created: #${payload.result}`);
+    return true;
+  } catch (err) {
+    console.error("[enquiry] could not reach Bitrix:", err);
     return false;
   }
 }

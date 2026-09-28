@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import Script from "next/script";
 import { Cormorant_Garamond, Inter } from "next/font/google";
+import Attribution from "@/components/Attribution";
 import ConsentBanner from "@/components/ConsentBanner";
 import { GOOGLE_ADS_ID, consentBootstrap } from "@/content/consent";
 import "./globals.css";
@@ -121,6 +122,7 @@ export default function RootLayout({
       </head>
       <body>
         {children}
+        <Attribution />
         <ConsentBanner />
 
         {/*

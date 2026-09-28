@@ -4,6 +4,7 @@ import { useEffect, useId, useState } from "react";
 import { useRouter } from "next/navigation";
 import { listing } from "@/content/listing";
 import { countries, defaultCountry } from "@/content/countries";
+import { readAttribution } from "@/content/attribution";
 
 type FieldKey = "name" | "email" | "phone" | "interest" | "consent";
 type Errors = Partial<Record<FieldKey, string>>;
@@ -100,11 +101,8 @@ export default function EnquiryForm() {
           consent,
           // Honeypot: real people never fill this in
           company: data.get("company") || "",
-          utm: {
-            source: params.get("utm_source") ?? "",
-            medium: params.get("utm_medium") ?? "",
-            campaign: params.get("utm_campaign") ?? "",
-          },
+          // Captured on the landing page, not read from the current URL
+          attribution: readAttribution(),
           pageUrl: window.location.href,
         }),
       });
