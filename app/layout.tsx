@@ -1,5 +1,8 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Cormorant_Garamond, Inter } from "next/font/google";
+import ConsentBanner from "@/components/ConsentBanner";
+import { GOOGLE_ADS_ID, consentBootstrap } from "@/content/consent";
 import "./globals.css";
 import { listing } from "@/content/listing";
 import { site } from "@/content/site";
@@ -116,7 +119,31 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <ConsentBanner />
+
+        {/*
+          Consent Mode v2 defaults, queued before the tag library loads.
+          beforeInteractive puts this in the initial HTML and runs it ahead of
+          any Next.js code, which is what keeps the defaults ahead of the tag.
+        */}
+        <Script
+          id="consent-mode"
+          strategy="beforeInteractive"
+          dangerouslySetInnerHTML={{ __html: consentBootstrap }}
+        />
+
+        {/*
+          The single Google Ads tag for the whole site. Mounted in the root
+          layout, so every route gets it exactly once.
+        */}
+        <Script
+          id="google-ads"
+          strategy="afterInteractive"
+          src={`https://www.googletagmanager.com/gtag/js?id=${GOOGLE_ADS_ID}`}
+        />
+      </body>
     </html>
   );
 }

@@ -279,6 +279,14 @@ export const listing = {
     },
   },
 
+  consent: {
+    message:
+      "We use cookies to measure the performance of our advertising. You can accept or decline.",
+    accept: "Accept",
+    decline: "Decline",
+    label: "Cookie consent",
+  },
+
   thankYou: {
     eyebrow: "Enquiry Received",
     heading: "Thank You",
