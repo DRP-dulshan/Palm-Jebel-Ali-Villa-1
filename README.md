@@ -75,19 +75,26 @@ Bitrix returning an error body, Bitrix unreachable, and the variable unset.
 Note that **Bitrix answers HTTP 200 even for errors**, putting `{"error": ...}`
 in the body, so the status code alone is not trusted.
 
-### Two forms, one route
+### Three forms, one route
 
-- **Register Your Interest** (`#enquire`) — name, WhatsApp number with country
-  code, email, optional message.
+- **Register Your Interest** (`#enquire`) — the section at the bottom. Name,
+  WhatsApp number with country code, email, optional message.
+- **Request Private Details** — a dialog opened from the header and the hero.
+  Same fields as Register Your Interest.
 - **Get Floor Plans & Payment Plan** — a dialog opened from the hero and below
-  the gallery (`components/BrochureCta.tsx`). Name, WhatsApp, email.
+  the gallery. Name, WhatsApp, email.
 
-Both post to `/api/enquiry/` and land on `/thank-you/`. The brochure form sends
-`request: "brochure"`, which shows as a **Request** row in the email, a
-"Brochure Request" subject line, and "Brochure Request" in the Bitrix lead
-title and comments.
+The dialogs are one component (`components/EnquiryDialog.tsx`); their copy is
+under `dialogs` in `content/listing.ts`. All three post to `/api/enquiry/` with
+a `request` of `enquiry`, `private` or `brochure` and land on `/thank-you/`.
+The request shows as a **Request** row in the email and a line in the Bitrix
+comments, and the dialog forms are named in the email subject and the Bitrix
+lead title ("Private Details Request", "Brochure Request").
 
-Submitting either form is the consent to be contacted; the notice under the
+The country code starts on the visitor's country when the browser language
+names one (`en-GB` → +44), and on +971 otherwise.
+
+Submitting any form is the consent to be contacted; the notice under the
 button says so.
 
 ### WhatsApp button

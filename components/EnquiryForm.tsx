@@ -3,7 +3,7 @@
 import { useEffect, useId, useState } from "react";
 import { useRouter } from "next/navigation";
 import { listing } from "@/content/listing";
-import { countries, defaultCountry } from "@/content/countries";
+import { countries, defaultCountry, localeCountry } from "@/content/countries";
 import { readAttribution } from "@/content/attribution";
 
 type FieldKey = "name" | "email" | "phone";
@@ -11,10 +11,12 @@ type Errors = Partial<Record<FieldKey, string>>;
 type Status = "idle" | "sending" | "error";
 
 /**
- * "enquiry" is the main Register Your Interest form; "brochure" is the
- * shorter floor plans & payment plan request, without the message box.
+ * Which form this is, sent to the API as `request`:
+ *   "enquiry"  — Register Your Interest, the section at the bottom
+ *   "private"  — Request Private Details, in a dialog; same fields
+ *   "brochure" — Get Floor Plans & Payment Plan, in a dialog; no message box
  */
-export type EnquiryKind = "enquiry" | "brochure";
+export type EnquiryKind = "enquiry" | "private" | "brochure";
 
 const copy = listing.enquiry.form;
 
@@ -32,14 +34,18 @@ export default function EnquiryForm({ kind = "enquiry" }: { kind?: EnquiryKind }
   const [interest, setInterest] = useState<string>(THIS_VILLA.label);
 
   const dial = countries.find((c) => c.code === country)?.dial ?? countries[0].dial;
-  const brochure = kind === "brochure";
+  const inDialog = kind !== "enquiry";
+  const withMessage = kind !== "brochure";
+
+  // After mount, so the server render and hydration agree on the default
+  useEffect(() => setCountry(localeCountry()), []);
 
   /*
    * The "different villa" CTA links to #enquire and sets ?looking=another-pja,
    * so a lead from there reaches the team marked as a wider search.
    */
   useEffect(() => {
-    if (brochure) return;
+    if (inDialog) return;
     const apply = () => {
       const preset =
         new URLSearchParams(window.location.search).get("looking") ??
@@ -51,7 +57,7 @@ export default function EnquiryForm({ kind = "enquiry" }: { kind?: EnquiryKind }
     apply();
     window.addEventListener("hashchange", apply);
     return () => window.removeEventListener("hashchange", apply);
-  }, [brochure]);
+  }, [inDialog]);
 
   const validate = (data: FormData): Errors => {
     const next: Errors = {};
@@ -96,7 +102,7 @@ export default function EnquiryForm({ kind = "enquiry" }: { kind?: EnquiryKind }
           email: data.get("email"),
           phone: `${dial} ${data.get("phone")}`,
           interest,
-          message: brochure ? "" : data.get("message") || "",
+          message: withMessage ? data.get("message") || "" : "",
           // Submitting under the notice beside the button is the agreement
           consent: true,
           // Honeypot: real people never fill this in
@@ -121,7 +127,7 @@ export default function EnquiryForm({ kind = "enquiry" }: { kind?: EnquiryKind }
     <form
       onSubmit={onSubmit}
       noValidate
-      className={`relative ${brochure ? "space-y-7" : "space-y-9"}`}
+      className={`relative ${inDialog ? "space-y-7" : "space-y-9"}`}
     >
       {/* Honeypot — off-screen and hidden from assistive tech */}
       <div aria-hidden="true" className="absolute -left-[9999px] h-0 w-0 overflow-hidden">
@@ -139,7 +145,7 @@ export default function EnquiryForm({ kind = "enquiry" }: { kind?: EnquiryKind }
       />
 
       {/* Side by side on the full form; stacked in the narrow dialog */}
-      <div className={`grid ${brochure ? "gap-7" : "gap-9 sm:grid-cols-2"}`}>
+      <div className={`grid ${inDialog ? "gap-7" : "gap-9 sm:grid-cols-2"}`}>
         <div>
           <label htmlFor={`${id}-phone`} className="eyebrow text-ink-mute">
             {copy.phone} <span className="text-accent-text">*</span>
@@ -208,7 +214,7 @@ export default function EnquiryForm({ kind = "enquiry" }: { kind?: EnquiryKind }
         />
       </div>
 
-      {!brochure && (
+      {withMessage && (
         <div>
           <label htmlFor={`${id}-message`} className="eyebrow text-ink-mute">
             {copy.message}{" "}
@@ -219,7 +225,7 @@ export default function EnquiryForm({ kind = "enquiry" }: { kind?: EnquiryKind }
           <textarea
             id={`${id}-message`}
             name="message"
-            rows={3}
+            rows={inDialog ? 2 : 3}
             placeholder="Payment plan, viewing availability, handover…"
             className={`${fieldClass} resize-none`}
           />
@@ -240,9 +246,9 @@ export default function EnquiryForm({ kind = "enquiry" }: { kind?: EnquiryKind }
         >
           {status === "sending"
             ? copy.submitting
-            : brochure
-              ? listing.brochure.submit
-              : copy.submit}
+            : kind === "enquiry"
+              ? copy.submit
+              : listing.dialogs[kind].submit}
         </button>
 
         <p className="mt-4 text-[0.8125rem] leading-relaxed text-ink-mute">

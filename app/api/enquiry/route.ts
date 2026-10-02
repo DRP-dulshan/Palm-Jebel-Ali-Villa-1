@@ -22,13 +22,24 @@ export type Lead = {
   receivedAt: string;
 };
 
-export type LeadRequest = "enquiry" | "brochure";
+export type LeadRequest = "enquiry" | "private" | "brochure";
 
 /** How each kind of request is labelled in the email and the CRM. */
 const REQUEST_LABELS: Record<LeadRequest, string> = {
   enquiry: "Enquiry",
+  private: "Private Details Request",
   brochure: "Brochure request: floor plans & payment plan",
 };
+
+/** Short form for the email subject and the Bitrix lead title. */
+const REQUEST_TITLES: Record<LeadRequest, string> = {
+  enquiry: "New Lead",
+  private: "Private Details Request",
+  brochure: "Brochure Request",
+};
+
+const isLeadRequest = (v: unknown): v is LeadRequest =>
+  typeof v === "string" && Object.hasOwn(REQUEST_LABELS, v);
 
 /** The form no longer asks, so a lead without one is about this villa. */
 const DEFAULT_INTEREST = "This villa: Wave Crest, Frond A";
@@ -71,7 +82,7 @@ export async function POST(request: Request) {
   }
 
   const lead: Lead = {
-    request: body.request === "brochure" ? "brochure" : "enquiry",
+    request: isLeadRequest(body.request) ? body.request : "enquiry",
     title: clean(body.title, 10),
     name: clean(body.name, 120),
     email: clean(body.email, 160),
@@ -205,9 +216,7 @@ async function deliverLead(lead: Lead): Promise<boolean> {
       from,
       to: [to],
       replyTo: lead.email,
-      subject: `${
-        lead.request === "brochure" ? "Brochure Request" : "New Lead"
-      } – Wave Crest PJA Frond A – ${lead.name}`,
+      subject: `${REQUEST_TITLES[lead.request]} – Wave Crest PJA Frond A – ${lead.name}`,
       html,
     });
     if (error) {
@@ -267,9 +276,14 @@ async function sendToBitrix(lead: Lead): Promise<boolean> {
   const endpoint = `${base.endsWith("/") ? base : base + "/"}crm.lead.add.json`;
 
   const fields: Record<string, unknown> = {
-    TITLE: `Palm Jebel Ali Villa - ${
-      lead.request === "brochure" ? "Brochure Request - " : ""
-    }${lead.name}`,
+    // Plain enquiries keep the title they always had
+    TITLE: [
+      "Palm Jebel Ali Villa",
+      lead.request === "enquiry" ? "" : REQUEST_TITLES[lead.request],
+      lead.name,
+    ]
+      .filter(Boolean)
+      .join(" - "),
     NAME: lead.name,
     PHONE: [{ VALUE: lead.phone, VALUE_TYPE: "WORK" }],
     EMAIL: [{ VALUE: lead.email, VALUE_TYPE: "WORK" }],

@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import Picture from "./Picture";
 import { listing } from "@/content/listing";
 import { ArrowDownIcon } from "./icons";
-import BrochureCta from "./BrochureCta";
+import EnquiryDialog from "./EnquiryDialog";
 
 export default function Hero() {
   const layer = useRef<HTMLDivElement>(null);
@@ -131,15 +131,18 @@ export default function Hero() {
             className={`mt-7 flex flex-col gap-3 ${rise} sm:mt-9 sm:flex-row sm:gap-4`}
             style={{ animationDelay: "600ms" }}
           >
-            <a
-              href="#enquire"
+            <EnquiryDialog
+              kind="private"
               className="eyebrow inline-flex w-full items-center justify-center bg-ink px-8 py-4 text-sand-50 transition-colors duration-300 hover:bg-teal-deep sm:w-auto"
             >
               {hero.cta}
-            </a>
-            <BrochureCta className="eyebrow inline-flex w-full items-center justify-center border border-white/40 bg-transparent px-8 py-4 text-white backdrop-blur-[2px] transition-colors duration-300 hover:bg-white hover:text-ink sm:w-auto">
+            </EnquiryDialog>
+            <EnquiryDialog
+              kind="brochure"
+              className="eyebrow inline-flex w-full items-center justify-center border border-white/40 bg-transparent px-8 py-4 text-white backdrop-blur-[2px] transition-colors duration-300 hover:bg-white hover:text-ink sm:w-auto"
+            >
               {hero.brochureCta}
-            </BrochureCta>
+            </EnquiryDialog>
           </div>
         </div>
 

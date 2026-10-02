@@ -266,12 +266,24 @@ export const listing = {
     },
   },
 
-  /** The short "Get Floor Plans & Payment Plan" form, opened in a dialog. */
-  brochure: {
-    eyebrow: "Floor Plans & Payment Plan",
-    heading: "Receive the Full Details",
-    sub: "We'll send the floor plans and the payment plan to your WhatsApp and email.",
-    submit: "Send Me the Details",
+  /*
+   * The two forms that open in a dialog, keyed by the request they send.
+   * "brochure": Get Floor Plans & Payment Plan (hero, after the gallery).
+   * "private": Request Private Details (header and hero).
+   */
+  dialogs: {
+    brochure: {
+      eyebrow: "Floor Plans & Payment Plan",
+      heading: "Receive the Full Details",
+      sub: "We'll send the floor plans and the payment plan to your WhatsApp and email.",
+      submit: "Send Me the Details",
+    },
+    private: {
+      eyebrow: "Private Enquiries",
+      heading: "Request Private Details",
+      sub: "Leave your details and our team will contact you with full property details, the payment plan and a private consultation.",
+      submit: "Request Private Details",
+    },
     close: "Close",
   },
 

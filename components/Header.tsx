@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Logo from "./Logo";
+import EnquiryDialog from "./EnquiryDialog";
 import { listing } from "@/content/listing";
 
 export default function Header() {
@@ -40,17 +41,17 @@ export default function Header() {
           <Logo priority className="h-6 sm:h-7" />
         </a>
 
-        <a
-          href="#enquire"
+        <EnquiryDialog
+          kind="private"
           className="eyebrow hidden items-center border border-white/50 px-6 py-3 text-white transition-colors duration-300 hover:border-sand-50 hover:bg-sand-50 hover:text-ink sm:inline-flex"
         >
           {listing.hero.cta}
-        </a>
+        </EnquiryDialog>
 
         {/* Mobile: the sticky bottom bar carries the CTA, so keep the header quiet */}
-        <a href="#enquire" className="eyebrow text-white sm:hidden">
+        <EnquiryDialog kind="private" className="eyebrow text-white sm:hidden">
           Enquire
-        </a>
+        </EnquiryDialog>
       </div>
     </header>
   );

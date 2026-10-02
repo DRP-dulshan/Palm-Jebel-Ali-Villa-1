@@ -1,6 +1,7 @@
 /**
  * Dial codes for the phone field, listed A–Z by country name.
- * The field defaults to the UAE via `defaultCountry` below.
+ * The field defaults to the visitor's country where the browser says what
+ * it is (see `localeCountry`), otherwise to the UAE via `defaultCountry`.
  */
 export const countries = [
   { code: "AR", dial: "+54", name: "Argentina" },
@@ -68,3 +69,27 @@ export const countries = [
 ] as const;
 
 export const defaultCountry = "AE";
+
+/**
+ * The visitor's country from the browser's language settings, if one of
+ * them names a region we list ("en-GB" → GB). A bare language ("en") says
+ * nothing about where someone is, so it is skipped rather than guessed.
+ */
+export function localeCountry(): string {
+  const languages =
+    typeof navigator === "undefined"
+      ? []
+      : navigator.languages?.length
+        ? navigator.languages
+        : [navigator.language];
+
+  for (const tag of languages) {
+    try {
+      const region = new Intl.Locale(tag).region;
+      if (region && countries.some((c) => c.code === region)) return region;
+    } catch {
+      /* malformed tag — try the next one */
+    }
+  }
+  return defaultCountry;
+}
