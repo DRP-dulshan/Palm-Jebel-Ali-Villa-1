@@ -24,6 +24,7 @@ export const listing = {
       { value: "Direct", unit: "", label: "Beachfront" },
     ],
     cta: "Request Private Details",
+    brochureCta: "Get Floor Plans & Payment Plan",
   },
 
   intro: {
@@ -95,6 +96,8 @@ export const listing = {
     eyebrow: "Gallery",
     heading: "Inside Wave Crest",
     note: "Tap any image to view full screen.",
+    brochureLine: "See every level laid out, and exactly what remains to be paid.",
+    brochureCta: "Get Floor Plans & Payment Plan",
   },
 
   architecture: {
@@ -237,46 +240,45 @@ export const listing = {
     sub: "Leave your details and our team will contact you with full property details, the payment plan and a private consultation.",
     note: "Private consultation available upon request.",
     form: {
-      title: "Title",
-      titles: ["Mr", "Mrs", "Ms"] as const,
       name: "Full Name",
-      phone: "Contact Number",
+      phone: "WhatsApp Number",
       email: "Email",
-      interest: "I'm interested in",
+      message: "Message",
+      messageOptional: "optional",
+      /**
+       * What the team sees as "Interested in". Not asked on the form: it is
+       * set from the page — the "different villa" CTA arrives with
+       * ?looking=another-pja, everything else is about this villa.
+       */
       interests: [
         { id: "this-villa", label: "This villa: Wave Crest, Frond A" },
         { id: "another-pja", label: "Another villa on Palm Jebel Ali" },
-        { id: "other-waterfront", label: "Other Dubai waterfront property" },
       ],
-      /** Revealed for the second and third options */
-      area: "Preferred frond / area",
-      bedrooms: "Bedrooms",
-      bedroomOptions: ["3", "4", "5", "6+"] as const,
-      budget: "Budget range",
-      budgetOptions: [
-        "AED 10–20M",
-        "AED 20–30M",
-        "AED 30–50M",
-        "AED 50M+",
-      ] as const,
-      message: "Message",
-      messageOptional: "optional",
-      consent: "I agree to be contacted about this and similar properties.",
-      optional: "optional",
+      notice: "By submitting, you agree to be contacted about this and similar properties.",
       submit: "Register Your Interest",
       submitting: "Sending…",
-      successHeading: "Thank you.",
-      successBody: "Our team will be in touch shortly.",
-      successAgain: "Send another enquiry",
       errors: {
         name: "Please enter your full name.",
         email: "Please enter a valid email address.",
-        phone: "Please enter a valid contact number.",
-        interest: "Please choose what you're interested in.",
-        consent: "Please agree to be contacted so we can reply.",
+        phone: "Please enter a valid WhatsApp number.",
         generic: "Something went wrong. Please try again in a moment.",
       },
     },
+  },
+
+  /** The short "Get Floor Plans & Payment Plan" form, opened in a dialog. */
+  brochure: {
+    eyebrow: "Floor Plans & Payment Plan",
+    heading: "Receive the Full Details",
+    sub: "We'll send the floor plans and the payment plan to your WhatsApp and email.",
+    submit: "Send Me the Details",
+    close: "Close",
+  },
+
+  whatsapp: {
+    label: "Chat with us on WhatsApp",
+    message:
+      "Hi, I'm interested in the Wave Crest villa on Palm Jebel Ali. Please send me details.",
   },
 
   consent: {

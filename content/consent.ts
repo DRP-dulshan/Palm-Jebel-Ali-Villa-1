@@ -7,6 +7,16 @@
 
 export const GOOGLE_ADS_ID = "AW-18471837273";
 
+/**
+ * Optional conversion label for the WhatsApp button, e.g. "AbCdEfGh123".
+ *
+ * The button always fires a `whatsapp_click` event. If Google Ads gives the
+ * conversion action an event snippet with a send_to of
+ * "AW-18471837273/<label>", paste the label here and the click is also sent
+ * as that conversion.
+ */
+export const WHATSAPP_CONVERSION_LABEL = "";
+
 /** Where the visitor's choice is remembered between visits. */
 export const CONSENT_KEY = "wc-consent";
 

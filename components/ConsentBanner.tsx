@@ -1,9 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Container } from "./ui";
 import { listing } from "@/content/listing";
 import { CONSENT_KEY, consentSignals, type ConsentChoice } from "@/content/consent";
+import { useReserveBottom } from "./useReserveBottom";
 
 declare global {
   interface Window {
@@ -25,6 +26,8 @@ const { consent } = listing;
  */
 export default function ConsentBanner() {
   const [visible, setVisible] = useState(false);
+  const banner = useRef<HTMLDivElement>(null);
+  useReserveBottom("consent", banner, visible);
 
   useEffect(() => {
     try {
@@ -50,6 +53,7 @@ export default function ConsentBanner() {
 
   return (
     <div
+      ref={banner}
       role="dialog"
       aria-label={consent.label}
       className="fixed inset-x-0 bottom-0 z-[60] border-t border-sand-100/15 bg-ink text-sand-50"

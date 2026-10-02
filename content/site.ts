@@ -1,8 +1,8 @@
 /* ------------------------------------------------------------------
  * SITE CONFIG
  *
- * No personal contact details live here, and none are rendered on the
- * page. Enquiries go through the form to the address in the LEAD_EMAIL
+ * The only contact detail on the page is the office WhatsApp line behind
+ * the floating button. Form enquiries go to the address in the LEAD_EMAIL
  * environment variable — see .env.example.
  * ------------------------------------------------------------------ */
 
@@ -16,4 +16,7 @@ export const site = {
 
   /** Every call to action points here */
   enquiryAnchor: "#enquire",
+
+  /** Office WhatsApp, international format without "+" — as wa.me expects */
+  whatsapp: "971507720378",
 } as const;

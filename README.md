@@ -56,8 +56,9 @@ Without a key the behaviour differs by environment, deliberately:
 Also set `url` in `content/site.ts` to the live domain — Open Graph image URLs
 must be absolute, so the social preview only renders once it is in.
 
-**No personal contact details appear anywhere on the site or in the config.**
-Every CTA scrolls to the enquiry form.
+The only contact detail on the site is the office WhatsApp number behind the
+floating button (`whatsapp` in `content/site.ts`). Every other CTA leads to a
+form.
 
 ## Where leads go
 
@@ -73,6 +74,33 @@ Bitrix returning an error body, Bitrix unreachable, and the variable unset.
 
 Note that **Bitrix answers HTTP 200 even for errors**, putting `{"error": ...}`
 in the body, so the status code alone is not trusted.
+
+### Two forms, one route
+
+- **Register Your Interest** (`#enquire`) — name, WhatsApp number with country
+  code, email, optional message.
+- **Get Floor Plans & Payment Plan** — a dialog opened from the hero and below
+  the gallery (`components/BrochureCta.tsx`). Name, WhatsApp, email.
+
+Both post to `/api/enquiry/` and land on `/thank-you/`. The brochure form sends
+`request: "brochure"`, which shows as a **Request** row in the email, a
+"Brochure Request" subject line, and "Brochure Request" in the Bitrix lead
+title and comments.
+
+Submitting either form is the consent to be contacted; the notice under the
+button says so.
+
+### WhatsApp button
+
+Floating, bottom right, on the landing page only (not `/thank-you/`). It opens
+`wa.me` with a prefilled message (`whatsapp` in `content/listing.ts`) and
+fires `gtag('event', 'whatsapp_click')`.
+
+To count clicks as a Google Ads conversion, create a conversion action
+(Website, set up manually with code), copy the label from its event snippet
+(the part after `AW-18471837273/` in `send_to`) into
+`WHATSAPP_CONVERSION_LABEL` in `content/consent.ts`, and redeploy. Each click
+then also sends that conversion.
 
 ### Campaign attribution
 

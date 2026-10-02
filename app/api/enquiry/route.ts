@@ -5,6 +5,8 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export type Lead = {
+  /** Which form it came from — see REQUEST_LABELS */
+  request: LeadRequest;
   title: string;
   name: string;
   email: string;
@@ -19,6 +21,17 @@ export type Lead = {
   pageUrl: string;
   receivedAt: string;
 };
+
+export type LeadRequest = "enquiry" | "brochure";
+
+/** How each kind of request is labelled in the email and the CRM. */
+const REQUEST_LABELS: Record<LeadRequest, string> = {
+  enquiry: "Enquiry",
+  brochure: "Brochure request: floor plans & payment plan",
+};
+
+/** The form no longer asks, so a lead without one is about this villa. */
+const DEFAULT_INTEREST = "This villa: Wave Crest, Frond A";
 
 /** Campaign parameters captured on the visitor's landing page. */
 type Attribution = Partial<Record<
@@ -58,11 +71,12 @@ export async function POST(request: Request) {
   }
 
   const lead: Lead = {
+    request: body.request === "brochure" ? "brochure" : "enquiry",
     title: clean(body.title, 10),
     name: clean(body.name, 120),
     email: clean(body.email, 160),
     phone: clean(body.phone, 40),
-    interest: clean(body.interest, 120),
+    interest: clean(body.interest, 120) || DEFAULT_INTEREST,
     area: clean(body.area, 120),
     bedrooms: clean(body.bedrooms, 10),
     budget: clean(body.budget, 40),
@@ -86,7 +100,6 @@ export async function POST(request: Request) {
   if (!emailPattern.test(lead.email)) errors.email = "A valid email is required.";
   if (lead.phone.replace(/\D/g, "").length < 6)
     errors.phone = "A valid contact number is required.";
-  if (!lead.interest) errors.interest = "An interest selection is required.";
   if (!lead.consent) errors.consent = "Consent to be contacted is required.";
 
   if (Object.keys(errors).length > 0) {
@@ -168,9 +181,10 @@ async function deliverLead(lead: Lead): Promise<boolean> {
         <p style="margin:0 0 4px;color:#6e6555;font:12px/1.5 system-ui,sans-serif;text-transform:uppercase;letter-spacing:.18em">New lead</p>
         <h1 style="margin:0 0 24px;color:#0d2638;font:300 26px/1.2 Georgia,serif">Wave Crest · Palm Jebel Ali, Frond A</h1>
         <table style="border-collapse:collapse;width:100%">
+          ${row("Request", REQUEST_LABELS[lead.request])}
           ${row("Name", [lead.title, lead.name].filter(Boolean).join(" "))}
           ${row("Email", lead.email)}
-          ${row("Phone", lead.phone)}
+          ${row("WhatsApp", lead.phone)}
           ${row("Interested in", lead.interest)}
           ${row("Area", lead.area)}
           ${row("Bedrooms", lead.bedrooms)}
@@ -191,7 +205,9 @@ async function deliverLead(lead: Lead): Promise<boolean> {
       from,
       to: [to],
       replyTo: lead.email,
-      subject: `New Lead – Wave Crest PJA Frond A – ${lead.name}`,
+      subject: `${
+        lead.request === "brochure" ? "Brochure Request" : "New Lead"
+      } – Wave Crest PJA Frond A – ${lead.name}`,
       html,
     });
     if (error) {
@@ -225,6 +241,7 @@ const bitrixComments = (lead: Lead): string => {
     if (value) lines.push(`${label}: ${value}`);
   };
 
+  field("Request", REQUEST_LABELS[lead.request]);
   field("Interested in", lead.interest);
   field("Preferred area", lead.area);
   field("Bedrooms", lead.bedrooms);
@@ -250,7 +267,9 @@ async function sendToBitrix(lead: Lead): Promise<boolean> {
   const endpoint = `${base.endsWith("/") ? base : base + "/"}crm.lead.add.json`;
 
   const fields: Record<string, unknown> = {
-    TITLE: `Palm Jebel Ali Villa - ${lead.name}`,
+    TITLE: `Palm Jebel Ali Villa - ${
+      lead.request === "brochure" ? "Brochure Request - " : ""
+    }${lead.name}`,
     NAME: lead.name,
     PHONE: [{ VALUE: lead.phone, VALUE_TYPE: "WORK" }],
     EMAIL: [{ VALUE: lead.email, VALUE_TYPE: "WORK" }],

@@ -6,6 +6,7 @@ import Reveal from "./Reveal";
 import { Container, Eyebrow } from "./ui";
 import { listing, photos } from "@/content/listing";
 import { CloseIcon, ChevronIcon, ExpandIcon } from "./icons";
+import BrochureCta from "./BrochureCta";
 
 /** Editorial grid — deliberately uneven so it reads as a magazine spread. */
 const SPANS = [
@@ -65,6 +66,15 @@ export default function Gallery() {
             </Reveal>
           ))}
         </ul>
+
+        <Reveal className="mt-14 flex flex-col gap-7 border-t border-ink/10 pt-10 sm:mt-20 sm:flex-row sm:items-center sm:justify-between sm:gap-10 sm:pt-12">
+          <p className="max-w-xl font-serif text-[1.625rem] font-light leading-snug sm:text-3xl">
+            {gallery.brochureLine}
+          </p>
+          <BrochureCta className="eyebrow inline-flex w-full shrink-0 items-center justify-center bg-ink px-8 py-4 text-sand-50 transition-colors duration-300 hover:bg-teal-deep sm:w-auto">
+            {gallery.brochureCta}
+          </BrochureCta>
+        </Reveal>
       </Container>
 
       {open !== null && (

@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { listing } from "@/content/listing";
+import { useReserveBottom } from "./useReserveBottom";
 
 /**
  * Mobile-only sticky enquiry bar. Appears once the hero is scrolled past
@@ -9,6 +10,8 @@ import { listing } from "@/content/listing";
  */
 export default function StickyBar() {
   const [shown, setShown] = useState(false);
+  const bar = useRef<HTMLDivElement>(null);
+  useReserveBottom("sticky", bar, shown);
 
   useEffect(() => {
     const onScroll = () => {
@@ -30,6 +33,7 @@ export default function StickyBar() {
 
   return (
     <div
+      ref={bar}
       className={`fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-sand-50/95 backdrop-blur-md transition-transform duration-400 sm:hidden ${
         shown ? "translate-y-0" : "translate-y-full"
       }`}

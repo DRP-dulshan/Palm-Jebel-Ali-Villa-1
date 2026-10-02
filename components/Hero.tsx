@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import Picture from "./Picture";
 import { listing } from "@/content/listing";
 import { ArrowDownIcon } from "./icons";
+import BrochureCta from "./BrochureCta";
 
 export default function Hero() {
   const layer = useRef<HTMLDivElement>(null);
@@ -126,13 +127,19 @@ export default function Hero() {
             {hero.price}
           </p>
 
-          <div className={`mt-7 ${rise} sm:mt-9`} style={{ animationDelay: "600ms" }}>
+          <div
+            className={`mt-7 flex flex-col gap-3 ${rise} sm:mt-9 sm:flex-row sm:gap-4`}
+            style={{ animationDelay: "600ms" }}
+          >
             <a
               href="#enquire"
               className="eyebrow inline-flex w-full items-center justify-center bg-ink px-8 py-4 text-sand-50 transition-colors duration-300 hover:bg-teal-deep sm:w-auto"
             >
               {hero.cta}
             </a>
+            <BrochureCta className="eyebrow inline-flex w-full items-center justify-center border border-white/40 bg-transparent px-8 py-4 text-white backdrop-blur-[2px] transition-colors duration-300 hover:bg-white hover:text-ink sm:w-auto">
+              {hero.brochureCta}
+            </BrochureCta>
           </div>
         </div>
 
@@ -159,10 +166,11 @@ export default function Hero() {
         </dl>
       </div>
 
+      {/* Centred: the bottom-right corner belongs to the WhatsApp button */}
       <a
         href="#opportunity"
         aria-label="Scroll to the next section"
-        className="absolute bottom-6 right-6 hidden text-white/60 transition-colors hover:text-white lg:block"
+        className="absolute bottom-6 left-1/2 hidden -translate-x-1/2 text-white/60 transition-colors hover:text-white lg:block"
       >
         <ArrowDownIcon className="h-6 w-6 animate-[drift_2.4s_ease-in-out_infinite]" />
       </a>

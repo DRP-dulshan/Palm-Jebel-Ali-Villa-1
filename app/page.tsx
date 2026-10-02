@@ -10,6 +10,7 @@ import Alternatives from "@/components/Alternatives";
 import Enquiry from "@/components/Enquiry";
 import Footer from "@/components/Footer";
 import StickyBar from "@/components/StickyBar";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 export default function Page() {
   return (
@@ -42,6 +43,7 @@ export default function Page() {
 
       <Footer />
       <StickyBar />
+      <WhatsAppButton />
     </>
   );
 }
